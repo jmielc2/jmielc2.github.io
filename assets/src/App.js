@@ -45,7 +45,7 @@ export default function init(p) {
             app.HEIGHT,
             p.P2D
         );
-        p.frameRate(24);
+        p.frameRate(App.FPS);
     }
 
     p.draw = function() {

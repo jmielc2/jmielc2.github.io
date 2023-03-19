@@ -6,12 +6,12 @@ let HEIGHT = 0;
 
 function getDimensions() {
   let x = Math.min(
-    Math.round(window.innerWidth / dim),
+    Math.round((window.innerWidth - dim) / dim),
     MAX_DIM_X
   );
   x -= ((x - 3) % 2);
   let y = Math.min(
-    Math.round(window.innerHeight / dim),
+    Math.round((window.innerHeight - dim) / dim),
     MAX_DIM_Y
   );
   y -= ((y - 3) % 2);

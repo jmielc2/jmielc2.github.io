@@ -25,7 +25,6 @@ export class App {
         this.Pages = {MAIN_MENU : new MainMenu(), GAME : new Game()};
         this.curPage = this.Pages.MAIN_MENU;
         this.lastUpdate = Date.now();
-        this.updateTime = 1000 / App.FPS;
     }
 
     setPage(page) {
@@ -35,6 +34,7 @@ export class App {
 
 export default function init(p) {
     const app = new App();
+    app.canvas = p;
 
     p.setup = function() {
         let dimensions = getDimensions();
@@ -45,13 +45,12 @@ export default function init(p) {
             app.HEIGHT,
             p.P2D
         );
+        p.frameRate(24);
     }
 
     p.draw = function() {
         const time = Date.now();
-        if (time - app.lastUpdate > app.updateTime) {
-            app.curPage.update(p, app, time - app.lastUpdate);
-            app.lastUpdate = time;
-        }
+        app.curPage.update(p, app, time - this.lastUpdate);
+        this.lastUpdate = time;
     }
 }

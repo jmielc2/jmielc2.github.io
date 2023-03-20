@@ -1,14 +1,13 @@
 import Cell from "./Cell.js"
 
 const TEXT_SIZE = 26;
-const TEXT_WEIGHT = 1;
 const PADDING = 8;
 const STATES = {HOVER : 0, DEFAULT : 1};
 
 export default class Button {
     constructor(p, data) {
         p.textSize(TEXT_SIZE);
-        p.strokeWeight(TEXT_WEIGHT);
+        p.noStroke();
         data.width = p.textWidth(data.text);
         data.height = p.textAscent() + p.textDescent();
         this.backdrop = new Cell(

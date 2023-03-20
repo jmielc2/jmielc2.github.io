@@ -9,3 +9,7 @@ body {
     align-items: center;
     background-color: black;
 }
+
+canvas {
+    border: white 1px solid;
+}

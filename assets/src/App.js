@@ -22,7 +22,7 @@ export class App {
     static FPS = 24;
 
     constructor() {
-        this.Pages = {MAIN_MENU : new MainMenu(), GAME : new Game()};
+        this.Pages = {MAIN_MENU : new MainMenu(this), GAME : new Game(this)};
         this.curPage = this.Pages.MAIN_MENU;
         this.lastUpdate = Date.now();
     }
@@ -30,14 +30,25 @@ export class App {
     setPage(page) {
         this.curPage = page;
     }
+
+    init(p) {
+        this.Pages.MAIN_MENU.init(p, this);
+        this.Pages.GAME.init(p, this);
+    }
 }
 
 export default function init(p) {
     const app = new App();
     app.canvas = p;
 
+    p.preload = function() {
+        app.font = p.loadFont("./assets/font/PixeloidSans.ttf");
+    }
+
     p.setup = function() {
         let dimensions = getDimensions();
+        app.DIM_X = dimensions.X;
+        app.DIM_Y = dimensions.Y;
         app.WIDTH = dimensions.X * Cell.dim;
         app.HEIGHT = dimensions.Y * Cell.dim;
         p.createCanvas(
@@ -45,7 +56,11 @@ export default function init(p) {
             app.HEIGHT,
             p.P2D
         );
+        
+        p.textAlign(p.CENTER, p.CENTER);
+        p.textFont(app.font);
         p.frameRate(App.FPS);
+        app.init(p);
     }
 
     p.draw = function() {

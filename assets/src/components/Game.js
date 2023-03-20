@@ -2,12 +2,20 @@ import Cell from "./Cell.js"
 import { App } from "../App.js"
 
 export default class Game {
-    constructor() {
+    constructor(app) {
         this.iter = 0;
-        this.update = this.startup;
+        this.update = this.#startup;
     }
 
-    refresh(p, app, deltaTime) {
+    reset(p) {
+
+    }
+
+    init(p, app) {
+        return;
+    }
+
+    #refresh(p, app, deltaTime) {
         for (let i = 0; i < app.WIDTH; i += Cell.dim) {
             for (let j = 0; j < app.HEIGHT; j += Cell.dim) {
                 if (((j / Cell.dim) % 2) || ((i / Cell.dim) % 2)) {
@@ -23,17 +31,13 @@ export default class Game {
         if (this.iter == 100) {
             this.pause();
             app.setPage(app.Pages.MAIN_MENU);
-            this.update = this.startup;
+            this.update = this.#startup;
         }
     }
 
-    reset(p) {
-
-    }
-
-    startup(p) {
+    #startup(p) {
         this.iter = 0;
-        this.update = this.refresh;
+        this.update = this.#refresh;
     }
 
     pause(p) {

@@ -24,7 +24,6 @@ export class App {
     constructor() {
         this.Pages = {MAIN_MENU : new MainMenu(this), GAME : new Game(this)};
         this.curPage = this.Pages.MAIN_MENU;
-        this.lastUpdate = Date.now();
     }
 
     setPage(page) {
@@ -32,14 +31,13 @@ export class App {
     }
 
     init(p) {
-        this.Pages.MAIN_MENU.init(p, this);
-        this.Pages.GAME.init(p, this);
+        this.Pages.MAIN_MENU.init(p);
+        this.Pages.GAME.init(p);
     }
 }
 
 export default function init(p) {
     const app = new App();
-    app.canvas = p;
 
     p.preload = function() {
         app.font = p.loadFont("./assets/font/PixeloidSans.ttf");
@@ -64,8 +62,6 @@ export default function init(p) {
     }
 
     p.draw = function() {
-        const time = Date.now();
-        app.curPage.update(p, app, time - this.lastUpdate);
-        this.lastUpdate = time;
+        app.curPage.update(p);
     }
 }

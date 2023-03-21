@@ -3,6 +3,7 @@ import { App } from "../App.js"
 
 export default class Game {
     constructor(app) {
+        Game.app = app;
         this.iter = 0;
         this.update = this.#startup;
     }
@@ -11,13 +12,14 @@ export default class Game {
 
     }
 
-    init(p, app) {
+    init(p) {
         return;
     }
 
-    #refresh(p, app, deltaTime) {
-        for (let i = 0; i < app.WIDTH; i += Cell.dim) {
-            for (let j = 0; j < app.HEIGHT; j += Cell.dim) {
+    #refresh(p) {
+        p.rectMode(p.CORNER);
+        for (let i = 0; i < Game.app.WIDTH; i += Cell.dim) {
+            for (let j = 0; j < Game.app.HEIGHT; j += Cell.dim) {
                 if (((j / Cell.dim) % 2) || ((i / Cell.dim) % 2)) {
                     p.fill(255);
                 } else {
@@ -30,12 +32,13 @@ export default class Game {
         this.iter++;
         if (this.iter == 100) {
             this.pause();
-            app.setPage(app.Pages.MAIN_MENU);
+            Game.app.setPage(Game.app.Pages.MAIN_MENU);
             this.update = this.#startup;
         }
     }
 
     #startup(p) {
+        console.log("Starting up...");
         this.iter = 0;
         this.update = this.#refresh;
     }
@@ -43,4 +46,6 @@ export default class Game {
     pause(p) {
         return;
     }
+
+    static app = null;
 }

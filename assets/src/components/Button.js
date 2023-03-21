@@ -8,13 +8,13 @@ export default class Button {
     constructor(p, data) {
         p.textSize(TEXT_SIZE);
         p.noStroke();
-        data.width = p.textWidth(data.text);
-        data.height = p.textAscent() + p.textDescent();
+        data.width = (data.width)? data.width : p.textWidth(data.text) + PADDING;
+        data.height = (data.height)? data.height : p.textAscent() + p.textDescent();
         this.backdrop = new Cell(
-            data.x - ((data.width + PADDING) / 2),
-            data.y - (data.height / 2),
-            data.width + PADDING,
-            data.height + PADDING,
+            data.x - (data.width / 2),
+            data.y - (data.height / 2) + (PADDING / 1.5),
+            data.width,
+            data.height,
             data.default
         );
         this.data = data;
@@ -23,6 +23,9 @@ export default class Button {
 
     update(p) {
         this.#updateState(p);
+        if (p.mouseIsPressed) {
+            this.data.callback(p);
+        }
     }
 
     draw(p) {
@@ -35,14 +38,14 @@ export default class Button {
         p.text(this.data.text, this.data.x, this.data.y);
     }
 
-    #updateState(p) {
-        const x = this.data.x - ((this.data.width + PADDING) / 2);
+    #updateState(p, app) {
+        const x = this.data.x - (this.data.width / 2);
         const y = this.data.y - (this.data.height / 2);
         let curState = (
             p.mouseX <= x || 
             p.mouseY <= y || 
-            p.mouseX >= x + this.data.width + PADDING ||
-            p.mouseY >= y + this.data.height + PADDING
+            p.mouseX >= x + this.data.width ||
+            p.mouseY >= y + this.data.height
         )? STATES.DEFAULT : STATES.HOVER; 
         if (curState != this.state) {
             this.backdrop.setColor((curState == STATES.HOVER)? this.data.hover : this.data.default);

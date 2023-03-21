@@ -3,6 +3,8 @@ import Button from "./Button.js"
 
 export default class MainMenu {
     constructor(app) {
+        MainMenu.app = app;
+        PLAY_BTN.callback = this.playBtnCallback;
         this.update = this.#startup;
     }
 
@@ -10,17 +12,18 @@ export default class MainMenu {
 
     }
 
-    init(p, app) {
-        PLAY_BTN.x = app.WIDTH / 2;
-        PLAY_BTN.y = app.HEIGHT / 2;
+    init(p) {
+        PLAY_BTN.x = MainMenu.app.WIDTH / 2;
+        PLAY_BTN.y = MainMenu.app.HEIGHT / 2;
         this.playBtn = new Button(p, PLAY_BTN);
     }
 
-    #refresh(p, app, deltaTime) {
+    #refresh(p) {
+        p.clear();
         p.background(0, 0, 0);
-        this.playBtn.update(p);
+        this.playBtn.update(p, MainMenu.app);
 
-        this.#drawUI(p, app);
+        this.#drawUI(p, MainMenu.app);
     }
 
     #startup(p) {
@@ -31,25 +34,36 @@ export default class MainMenu {
         return;
     }
 
-    #drawUI(p, app) {
+    #drawUI(p) {
         p.rectMode(p.CENTER);
         p.textSize(50);
         p.strokeWeight(3);
         p.stroke(255);
         p.fill(0);
-        p.text("L A B Y R I N T H", app.WIDTH / 2, app.HEIGHT / 3, app.WIDTH);
+        p.text(
+            "L A B Y R I N T H",
+            MainMenu.app.WIDTH / 2,
+            MainMenu.app.HEIGHT / 3,
+            MainMenu.app.WIDTH
+        );
 
         this.playBtn.draw(p);
     }
 
-    static playCallback = function() {
-        console.log("Pressed play button.");
-    }
+    static app = null;
+
+    playBtnCallback = (function(p) {
+        this.#pause(p);
+        this.update = this.#startup;
+        MainMenu.app.setPage(MainMenu.app.Pages.GAME);
+    }).bind(this);
 }
 
 const PLAY_BTN = {
     x : null,
     y : null,
+    width : null,
+    height : null,
     text : "Play",
     default : {
         r : 255,
@@ -61,5 +75,5 @@ const PLAY_BTN = {
         g : 155,
         b : 155,
     },
-    callback : MainMenu.playCallback
+    callback : null
 }

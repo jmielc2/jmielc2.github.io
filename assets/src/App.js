@@ -17,8 +17,8 @@ function getDimensions() {
 }
 
 export class App {
-    static MAX_DIM_X = 33;
-    static MAX_DIM_Y = 23;
+    static MAX_DIM_X = 37;
+    static MAX_DIM_Y = 27;
     static FPS = 24;
 
     constructor() {

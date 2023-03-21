@@ -27,7 +27,6 @@ function canClearWall(cur, graph) {
 }
 
 export function generateMaze(game, difficulty) {
-    console.log("Testing");
     // Choose Start & End Points 
     let index = Math.round(Math.random() * 10) % 4;
     let addend = (Math.round(Math.random() * 10) % 3) + 1;

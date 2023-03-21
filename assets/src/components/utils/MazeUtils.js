@@ -1,7 +1,6 @@
 import Node from "../Node.js"
 import { Directions, BOUNDARY_POINTS } from "../Game.js"
 
-
 class Entry {
     constructor(x, y, dir, check) {
         this.x = x;

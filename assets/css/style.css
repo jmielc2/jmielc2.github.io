@@ -13,3 +13,9 @@ body {
 canvas {
     border: white 1px solid;
 }
+
+canvas::-moz-selection,
+canvas::selection {
+    background-color: transparent;
+    color: #000;
+}

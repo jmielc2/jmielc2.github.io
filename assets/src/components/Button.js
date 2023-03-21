@@ -2,7 +2,7 @@ import Cell from "./Cell.js"
 
 const TEXT_SIZE = 26;
 const PADDING = 8;
-const STATES = {HOVER : 0, DEFAULT : 1};
+const States = {HOVER : 0, DEFAULT : 1};
 
 export default class Button {
     constructor(p, data) {
@@ -13,17 +13,17 @@ export default class Button {
         this.backdrop = new Cell(
             data.x - (data.width / 2),
             data.y - (data.height / 2) + (PADDING / 1.5),
+            data.default,
             data.width,
-            data.height,
-            data.default
+            data.height
         );
         this.data = data;
-        this.state = STATES.DEFAULT;
+        this.state = States.DEFAULT;
     }
 
     update(p) {
         this.#updateState(p);
-        if (p.mouseIsPressed) {
+        if (p.mouseIsPressed && this.state == States.HOVER) {
             this.data.callback(p);
         }
     }
@@ -46,9 +46,9 @@ export default class Button {
             p.mouseY <= y || 
             p.mouseX >= x + this.data.width ||
             p.mouseY >= y + this.data.height
-        )? STATES.DEFAULT : STATES.HOVER; 
+        )? States.DEFAULT : States.HOVER; 
         if (curState != this.state) {
-            this.backdrop.setColor((curState == STATES.HOVER)? this.data.hover : this.data.default);
+            this.backdrop.setColor((curState == States.HOVER)? this.data.hover : this.data.default);
             this.state = curState;
         }
     }

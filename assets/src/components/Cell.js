@@ -1,5 +1,5 @@
 export default class Cell {
-    static dim = 30;
+    static dim = 35;
 
     constructor(x, y, width, height, color) {
         this.x = x;

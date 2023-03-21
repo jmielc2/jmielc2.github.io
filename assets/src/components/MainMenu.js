@@ -1,3 +1,5 @@
+
+import Cell from "./Cell.js"
 import { App } from "../App.js"
 import Button from "./Button.js"
 
@@ -5,7 +7,7 @@ export default class MainMenu {
     constructor(app) {
         MainMenu.app = app;
         PLAY_BTN.callback = this.playBtnCallback;
-        this.update = this.#startup;
+        this.update = this.startup;
     }
 
     reset(p) {
@@ -13,8 +15,8 @@ export default class MainMenu {
     }
 
     init(p) {
-        PLAY_BTN.x = MainMenu.app.WIDTH / 2;
-        PLAY_BTN.y = MainMenu.app.HEIGHT / 2;
+        PLAY_BTN.x = (PLAY_BTN.x)? PLAY_BTN.x : MainMenu.app.WIDTH / 2;
+        PLAY_BTN.y = (PLAY_BTN.y)? PLAY_BTN.y : MainMenu.app.HEIGHT / 2;
         this.playBtn = new Button(p, PLAY_BTN);
     }
 
@@ -26,12 +28,12 @@ export default class MainMenu {
         this.#drawUI(p, MainMenu.app);
     }
 
-    #startup(p) {
+    startup(p) {
         this.update = this.#refresh;
     }
 
-    #pause(p) {
-        return;
+    pause(p) {
+        this.update = this.startup;
     }
 
     #drawUI(p) {
@@ -53,8 +55,6 @@ export default class MainMenu {
     static app = null;
 
     playBtnCallback = (function(p) {
-        this.#pause(p);
-        this.update = this.#startup;
         MainMenu.app.setPage(MainMenu.app.Pages.GAME);
     }).bind(this);
 }
@@ -62,8 +62,8 @@ export default class MainMenu {
 const PLAY_BTN = {
     x : null,
     y : null,
-    width : null,
-    height : null,
+    width : 3 * Cell.dim,
+    height : Cell.dim,
     text : "Play",
     default : {
         r : 255,

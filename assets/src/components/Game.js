@@ -4,8 +4,7 @@ import { App } from "../App.js"
 export default class Game {
     constructor(app) {
         Game.app = app;
-        this.iter = 0;
-        this.update = this.#startup;
+        this.update = this.startup;
     }
 
     reset(p) {
@@ -29,22 +28,17 @@ export default class Game {
             }
         }
 
-        this.iter++;
-        if (this.iter == 100) {
-            this.pause();
+        if (p.mouseIsPressed) {
             Game.app.setPage(Game.app.Pages.MAIN_MENU);
-            this.update = this.#startup;
         }
     }
 
-    #startup(p) {
-        console.log("Starting up...");
-        this.iter = 0;
+    startup(p) {
         this.update = this.#refresh;
     }
 
     pause(p) {
-        return;
+        this.update = this.startup;
     }
 
     static app = null;

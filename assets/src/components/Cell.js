@@ -11,13 +11,17 @@ export default class Cell {
 
     draw(p) {
         p.rectMode(p.CORNER);
-        p.stroke(255);
-        p.strokeWeight(1);
+        p.noStroke();
         p.fill(this.color.r, this.color.g, this.color.b);
         p.rect(this.x, this.y, this.width, this.height);
     }
 
     setColor(color) {
         this.color = color;
+    }
+
+    setPosition(x, y) {
+        this.x = x;
+        this.y = y;
     }
 }

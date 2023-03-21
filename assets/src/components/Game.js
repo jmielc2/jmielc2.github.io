@@ -1,4 +1,5 @@
 import Cell from "./Cell.js"
+import Node from "./Node.js"
 import { App } from "../App.js"
 
 export default class Game {
@@ -12,9 +13,7 @@ export default class Game {
     }
 
     init(p) {
-        this.grid = new Array(Game.app.DIM_Y).fill(
-            new Array(Game.app.DIM_X),
-        );
+        this.grid = Array(Game.app.DIM_Y).fill(0).map(x => Array(Game.app.DIM_X).fill(0));
         for (let i = 0; i < this.grid.length; i++) {
             for (let j = 0; j < this.grid[0].length; j++) {
                 let color;
@@ -23,7 +22,7 @@ export default class Game {
                 } else {
                     color = {r : 0, g : 0, b : 0};
                 }
-                this.grid[i][j] = new Cell(j * Cell.dim, i * Cell.dim, color);
+                this.grid[i][j] = new Node(j, i, color);
             }
         }
     }
@@ -31,15 +30,11 @@ export default class Game {
     #refresh(p) {
         p.clear();
         p.rectMode(p.CORNER);
-        this.grid.forEach((row, i) => {
-            row.forEach((cell, j) => {
-                cell.draw(p);
+        this.grid.forEach((row) => {
+            row.forEach((node) => {
+                node.draw(p);
             });
         });
-
-        if (p.mouseIsPressed) {
-            Game.app.setPage(Game.app.Pages.MAIN_MENU);
-        }
     }
 
     startup(p) {

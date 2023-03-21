@@ -29,7 +29,7 @@ export function generateMaze(game, difficulty) {
     // Choose Start & End Points 
     let index = Math.round(Math.random() * 10) % 4;
     let addend = (Math.round(Math.random() * 10) % 3) + 1;
-    if (!(addend % 2)) {
+    if (!(addend & 1)) {
         addend += (Math.random() > 0.5)? 1 : -1;
     }
     const start = BOUNDARY_POINTS[index];

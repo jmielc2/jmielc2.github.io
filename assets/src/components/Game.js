@@ -44,7 +44,7 @@ export default class Game {
             }
         }
         let yOffset = Math.round((Game.app.DIM_Y - 3) / 3)
-        yOffset = (yOffset % 2)? yOffset : yOffset - 1;
+        yOffset = (yOffset & 1)? yOffset : yOffset - 1;
         BOUNDARY_POINTS.push(
             {x:0, y:yOffset},
             {x:Game.app.DIM_X - 1, y:yOffset},
@@ -77,7 +77,7 @@ export default class Game {
     }
 
     setPlayerPos(x, y) {
-        this.grid[y][x].setType(Node.Type.PLAYER);
+        this.grid[y][x].setType(Node.Type.DEBUG);
     }
 
     setExitPos(x, y) {

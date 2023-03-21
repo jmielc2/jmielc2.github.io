@@ -7,12 +7,12 @@ function getDimensions() {
         Math.round((window.innerWidth - Cell.dim) / Cell.dim),
         App.MAX_DIM_X
     );
-    x -= ((x - 3) % 2);
+    x -= ((x - 3) & 1);
     let y = Math.min(
         Math.round((window.innerHeight - Cell.dim) / Cell.dim),
         App.MAX_DIM_Y
     );
-    y -= ((y - 3) % 2);
+    y -= ((y - 3) & 1);
     return {X : x, Y : y};
 }
 

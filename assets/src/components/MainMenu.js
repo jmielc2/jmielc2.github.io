@@ -1,7 +1,25 @@
 
 import Cell from "./Cell.js"
-import { App } from "../App.js"
 import Button from "./Button.js"
+
+const PLAY_BTN = {
+    x : null,
+    y : null,
+    width : 4 * Cell.dim,
+    height : 1.25 * Cell.dim,
+    text : "Play",
+    default : {
+        r : 255,
+        g : 255,
+        b : 255
+    },
+    hover : {
+        r : 155,
+        g : 155,
+        b : 155,
+    },
+    callback : null
+}
 
 export default class MainMenu {
     constructor(app) {
@@ -57,23 +75,4 @@ export default class MainMenu {
     playBtnCallback = (function(p) {
         MainMenu.app.setPage(MainMenu.app.Pages.GAME);
     }).bind(this);
-}
-
-const PLAY_BTN = {
-    x : null,
-    y : null,
-    width : 3 * Cell.dim,
-    height : Cell.dim,
-    text : "Play",
-    default : {
-        r : 255,
-        g : 255,
-        b : 255
-    },
-    hover : {
-        r : 155,
-        g : 155,
-        b : 155,
-    },
-    callback : null
 }

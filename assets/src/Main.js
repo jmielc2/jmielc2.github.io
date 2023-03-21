@@ -1,3 +1,3 @@
 import init from "./App.js"
 
-var canvas = new p5(init);
+const canvas = new p5(init);

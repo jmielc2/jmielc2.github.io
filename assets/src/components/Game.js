@@ -106,7 +106,8 @@ export default class Game {
 
     nextLevel() {
         this.level++;
-        if (this) {
+        this.reset();
+        if (this.level == Game.Difficulty.length) {
             Game.app.setPage(Game.app.Pages.MAIN_MENU);
         }
     }

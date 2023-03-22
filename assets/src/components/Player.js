@@ -44,12 +44,15 @@ export default class Player extends Entity {
         if (this.time > (this.updateDelay * (1000 / App.FPS))) {
             if (this.dir) {
                 const next = this.calcMove(this.dir);
-                if (Player.game.grid.isValidPos(next) && Player.game.grid.getNodeType(next) == Node.Types.EXIT) {
-                    Player.game.nextLevel();
-                } else if (Player.game.grid.isValidPos(next) && Player.game.grid.getNodeType(next) == Node.Types.PATH) {
-                    Player.game.grid.setNodeType(this.pos, Node.Types.PATH);
-                    this.move(this.dir);
-                    Player.game.grid.setNodeType(this.pos, Node.Types.PLAYER);
+                if (Player.game.grid.isValidPos(next)) {
+                    if (Player.game.grid.getNodeType(next) == Node.Types.EXIT) {
+                        Player.game.nextLevel();
+                        return;
+                    } else if (Player.game.grid.getNodeType(next) == Node.Types.PATH) {
+                        Player.game.grid.setNodeType(this.pos, Node.Types.PATH);
+                        this.move(this.dir);
+                        Player.game.grid.setNodeType(this.pos, Node.Types.PLAYER);
+                    }
                 }
             }
             this.time = 0;

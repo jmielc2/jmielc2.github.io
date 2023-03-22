@@ -31,21 +31,25 @@ export default class Game {
         Directions[DOWN].key = App.canvas.DOWN_ARROW;
         Directions[LEFT].key = App.canvas.LEFT_ARROW;
         this.update = this.startup;
-        this.iter = 0;
+        this.level = 0;
         this.entities = new Set();
     }
 
     reset() {
         this.entities.clear();
         this.grid.reset();
-        let difficulty = Game.Difficulty[(this.iter < Game.Difficulty.length)? this.iter : Game.Difficulty.length - 1]
+        let difficulty = Game.Difficulty[(this.level < Game.Difficulty.length)? this.level : Game.Difficulty.length - 1]
         
         let mazeData = null;
         let i = 0;
         do {
             mazeData = generateMaze(this.grid.grid, difficulty);
             i++;
-        } while (getDistance(mazeData.start, mazeData.enemy) < 6 && i < 3);
+        } while (i < 3 && getDistance(mazeData.start, mazeData.enemy) < 6);
+        if (mazeData.start.x != 0 && mazeData.start.x != App.DIM_X - 1){
+            console.log(mazeData.start.x);
+            console.log(BOUNDARY_POINTS);
+        }
         this.initPlayer(difficulty, mazeData.start);
         this.initExit(difficulty, mazeData.end);
         this.initEnemy(difficulty, mazeData.enemy);
@@ -71,14 +75,11 @@ export default class Game {
 
         App.canvas.clear();
         this.grid.draw();
-
-        if (App.canvas.mouseIsPressed) {
-            this.reset();
-        }
     }
 
     startup() {
         this.reset();
+        this.level = 0;
         this.update = this.#refresh;
     }
 
@@ -101,6 +102,13 @@ export default class Game {
         this.enemy = new Enemy(this, pos);
         this.entities.add(this.enemy);
         this.grid.setNodeType(pos, Node.Types.ENEMY);
+    }
+
+    nextLevel() {
+        this.level++;
+        if (this) {
+            Game.app.setPage(Game.app.Pages.MAIN_MENU);
+        }
     }
 
     static app = null;

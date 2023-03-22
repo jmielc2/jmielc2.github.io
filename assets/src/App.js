@@ -2,6 +2,7 @@ import Cell from "./components/Cell.js"
 import MainMenu from "./components/MainMenu.js"
 import Game from "./components/Game.js"
 
+
 function getDimensions() {
     let x = Math.min(
         Math.round((window.innerWidth - Cell.dim) / Cell.dim),

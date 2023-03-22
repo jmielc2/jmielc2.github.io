@@ -74,8 +74,10 @@ export function generateMaze(grid, difficulty) {
     if (!(addend & 1)) {
         addend += (Math.random() > 0.5)? 1 : -1;
     }
-    const start = BOUNDARY_POINTS[index];
-    const end = BOUNDARY_POINTS[(index + addend) % 4];
+    const start = Object.assign({}, BOUNDARY_POINTS[index]);
+    const end = Object.assign({}, BOUNDARY_POINTS[(index + addend) % 4]);
+    // const start = BOUNDARY_POINTS[index];
+    // const end = BOUNDARY_POINTS[(index + addend) % 4];
 
     // Partition Grid
     let graph = grid.slice(1, grid.length - 1);

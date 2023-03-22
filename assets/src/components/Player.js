@@ -6,7 +6,6 @@ import { isValidPos } from "./utils/GameUtils.js"
 
 export default class Player extends Entity {
     constructor(game, pos) {
-        console.log("New player");
         super(pos);
         Player.game = game;
         this.setBehavior(Player.Modes.DEFAULT);
@@ -25,7 +24,7 @@ export default class Player extends Entity {
         let count = 0;
         let dir;
         for (let i = 0; i < NUM_DIRS; i++) {
-            if (App.canvas.keyCode == Directions[i].key) {
+            if (App.canvas.keyIsDown(Directions[i].key)) {
                 dir = Directions[i];
                 count++;
             }
@@ -36,16 +35,18 @@ export default class Player extends Entity {
     static #default(deltaTime) {
         this.time += deltaTime;
         this.input += deltaTime;
-        if (this.input >= this.inputDelay && App.canvas.keyIsPressed) {
+        if (this.input >= (this.inputDelay * (1000 / App.FPS)) && App.canvas.keyIsPressed) {
             this.dir = this.#getDirection()
             if (this.dir) {
                 this.input = 0;
             }
         }
-        if (this.time >= this.updateDelay) {
+        if (this.time >= (this.updateDelay * (1000 / App.FPS))) {
             if (this.dir) {
                 const next = this.calcMove(this.dir);
-                if (Player.game.grid.isValidPos(next) && Player.game.grid.getNodeType(next) == Node.Types.PATH) {
+                if (Player.game.grid.isValidPos(next) && Player.game.grid.getNodeType(next) == Node.Types.EXIT) {
+                    Player.game.nextLevel();
+                } else if (Player.game.grid.isValidPos(next) && Player.game.grid.getNodeType(next) == Node.Types.PATH) {
                     Player.game.grid.setNodeType(this.pos, Node.Types.PATH);
                     this.move(this.dir);
                     Player.game.grid.setNodeType(this.pos, Node.Types.PLAYER);
@@ -61,8 +62,8 @@ export default class Player extends Entity {
     static Modes = {
         DEFAULT : {
             update : Player.#default,
-            updateDelay : 200,
-            inputDelay : 0,                                 
+            updateDelay : 5,
+            inputDelay : 2,
         }
     }
 }

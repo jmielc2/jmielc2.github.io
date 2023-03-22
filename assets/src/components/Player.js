@@ -35,13 +35,13 @@ export default class Player extends Entity {
     static #default(deltaTime) {
         this.time += deltaTime;
         this.input += deltaTime;
-        if (this.input >= (this.inputDelay * (1000 / App.FPS)) && App.canvas.keyIsPressed) {
+        if (this.input > (this.inputDelay * (1000 / App.FPS)) && App.canvas.keyIsPressed) {
             this.dir = this.#getDirection()
             if (this.dir) {
                 this.input = 0;
             }
         }
-        if (this.time >= (this.updateDelay * (1000 / App.FPS))) {
+        if (this.time > (this.updateDelay * (1000 / App.FPS))) {
             if (this.dir) {
                 const next = this.calcMove(this.dir);
                 if (Player.game.grid.isValidPos(next) && Player.game.grid.getNodeType(next) == Node.Types.EXIT) {

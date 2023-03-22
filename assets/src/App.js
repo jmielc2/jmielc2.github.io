@@ -20,8 +20,10 @@ export class App {
     static MAX_DIM_X = 37;
     static MAX_DIM_Y = 27;
     static FPS = 24;
+    static canvas = null;
 
-    constructor() {
+    constructor(p) {
+        App.canvas = p;
         this.Pages = {MAIN_MENU : new MainMenu(this), GAME : new Game(this)};
         this.curPage = this.Pages.MAIN_MENU;
     }
@@ -39,7 +41,7 @@ export class App {
 }
 
 export default function init(p) {
-    const app = new App();
+    const app = new App(p);
 
     p.preload = function() {
         app.font = p.loadFont("./assets/font/PixeloidSans.ttf");

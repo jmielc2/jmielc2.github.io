@@ -2,7 +2,9 @@ import Cell from "./Cell.js"
 
 const WALL_COLOR = {r:0, g:0, b:0};
 const GROUND_COLOR = {r:255, g:255, b:255};
-const DEBUG_COLOR = {r:255, g:0, b:0};
+const PLAYER_COLOR = {r:0, g:0, b:255};
+const ENEMY_COLOR = {r:255, g:0, b:0};
+const DEBUG_COLOR = {r:0, g:255, b:0};
 
 export default class Node {
     static Type = {
@@ -16,22 +18,22 @@ export default class Node {
         },
         PLAYER : {
             id:2, 
-            color : GROUND_COLOR
+            color : PLAYER_COLOR
         },
         ENEMY : {
             id:3,
-            color : GROUND_COLOR
+            color : ENEMY_COLOR
         },
         EXIT : {
             id:4,
-            color : GROUND_COLOR
+            color : DEBUG_COLOR
         },
         DEBUG : {
             id:null,
             color : DEBUG_COLOR
         }
     };
-
+    
     constructor(x, y) {
         this.cell = new Cell(x * Cell.dim, y * Cell.dim, null, Cell.dim, Cell.dim);
         this.reset();

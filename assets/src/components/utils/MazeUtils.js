@@ -1,28 +1,70 @@
 import Node from "../Node.js"
-import { Directions, BOUNDARY_POINTS } from "../Game.js"
+import { Directions, NUM_DIRS, BOUNDARY_POINTS } from "../Game.js"
+import { isValidPos } from "./GameUtils.js";
 
 class Entry {
-    constructor(x, y, dir, check) {
+    constructor(x, y, dir, check, dist=0) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.check = check;
+        this.dist = dist;
     }
-}
-
-function isValidPos(x, y, graph) {
-    return !(x < 0 || y < 0 || y >= graph.length || x >= graph[0].length);
 }
 
 function canClearWall(cur, graph) {
     let count = 0;
-    for (let i = 0; i < Directions.NUM; i++) {
+    for (let i = 0; i < NUM_DIRS; i++) {
         let copy = Object.assign({}, cur);
-        copy.x += Directions.Dirs[i].x;
-        copy.y += Directions.Dirs[i].y;
+        copy.x += Directions[i].x;
+        copy.y += Directions[i].y;
         count += (!isValidPos(copy.x, copy.y, graph) || graph[copy.y][copy.x].getType() == Node.Type.WALL)? 1 : 0;
     }
     return (count < 3);
+}
+
+function generateMaze_h(graph, difficulty) {
+    let stack = [];
+    let x, y;
+    const explored = Array(graph.length).fill(0).map((x) => Array(graph[0].length).fill(false));
+    let dir = Math.round((Math.random() * 10)) % NUM_DIRS;
+    let furthest = new Entry(0, 0, dir, true);
+    stack.push(furthest);
+    while (stack.length) {
+        let cur = stack.pop();
+        if (explored[cur.y][cur.x] || canClearWall(cur, graph)) {
+            continue;
+        }
+        graph[cur.y][cur.x].setType(Node.Type.PATH);
+        explored[cur.y][cur.x] = true;
+
+        if (cur.check) {
+            if (cur.dist > furthest.dist) {
+                furthest = cur;
+            }
+            if (Math.round(Math.random() * 100) < difficulty) {
+                cur.dir = (Math.round(Math.random() * 10) % NUM_DIRS);
+            }
+            for (let i = 0; i < NUM_DIRS; i++) {
+                if (i == cur.dir) {
+                    continue;
+                }
+                x = cur.x + Directions[i].x;
+                y = cur.y + Directions[i].y;
+                if (isValidPos(x, y, graph)) {
+                    stack.push(new Entry(x, y, i, !cur.check, cur.dist + 1));
+                }
+            }
+        }
+        x = cur.x + Directions[cur.dir].x;
+        y = cur.y + Directions[cur.dir].y;
+        if (isValidPos(x, y, graph)) {
+            stack.push(new Entry(x, y, cur.dir, !cur.check, cur.dist + 1));
+        }
+    }
+    furthest.x += 1;
+    furthest.y += 1;
+    return furthest;
 }
 
 export function generateMaze(game, difficulty) {
@@ -34,8 +76,6 @@ export function generateMaze(game, difficulty) {
     }
     const start = BOUNDARY_POINTS[index];
     const end = BOUNDARY_POINTS[(index + addend) % 4];
-    game.setPlayerPos(start.x, start.y);
-    game.setExitPos(end.x, end.y);
 
     // Partition Grid
     let graph = game.grid.slice(1, game.grid.length - 1);
@@ -44,38 +84,9 @@ export function generateMaze(game, difficulty) {
     }, graph);
 
     // Generate Maze
-    let stack = [];
-    let x, y;
-    const explored = Array(graph.length).fill(0).map((x) => Array(graph[0].length).fill(false));
-    let dir = Math.round((Math.random() * 10)) % Directions.NUM;
-    stack.push(new Entry(0, 0, dir, true));
-    while (stack.length) {
-        let cur = stack.pop();
-        if (explored[cur.y][cur.x] || canClearWall(cur, graph)) {
-            continue;
-        }
-        graph[cur.y][cur.x].setType(Node.Type.PATH);
-        explored[cur.y][cur.x] = true;
-
-        if (cur.check) {
-            if (Math.round(Math.random() * 100) < difficulty) {
-                cur.dir = (Math.round(Math.random() * 10) % Directions.NUM);
-            }
-            for (let i = 0; i < Directions.NUM; i++) {
-                if (i == cur.dir) {
-                    continue;
-                }
-                x = cur.x + Directions.Dirs[i].x;
-                y = cur.y + Directions.Dirs[i].y;
-                if (isValidPos(x, y, graph)) {
-                    stack.push(new Entry(x, y, i, !cur.check));
-                }
-            }
-        }
-        x = cur.x + Directions.Dirs[cur.dir].x;
-        y = cur.y + Directions.Dirs[cur.dir].y;
-        if (isValidPos(x, y, graph)) {
-            stack.push(new Entry(x, y, cur.dir, !cur.check));
-        }
-    }
+    return {
+        start : start,
+        end : end,
+        enemy : generateMaze_h(graph, difficulty)
+    };
 }

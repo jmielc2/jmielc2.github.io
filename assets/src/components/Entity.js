@@ -1,11 +1,15 @@
 export default class Entity {
     constructor(pos) {
-        this.x = pos.x;
-        this.y = pos.y;
+        this.pos = Object.assign(pos);
     }
 
     move(dir) {
-        this.x += dir.x;
-        this.y += dir.y;
+        this.pos.x += dir.x;
+        this.pos.y += dir.y;
+
+    }
+
+    calcMove(dir) {
+        return {x:this.pos.x + dir.x, y:this.pos.y + dir.y};
     }
 }

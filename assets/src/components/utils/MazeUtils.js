@@ -1,6 +1,6 @@
 import Node from "../Node.js"
 import { Directions, NUM_DIRS, BOUNDARY_POINTS } from "../Game.js"
-import { isValidPos } from "./GameUtils.js";
+import { isValidPos } from "./GameUtils.js"
 
 class Entry {
     constructor(x, y, dir, check, dist=0) {
@@ -18,7 +18,7 @@ function canClearWall(cur, graph) {
         let copy = Object.assign({}, cur);
         copy.x += Directions[i].x;
         copy.y += Directions[i].y;
-        count += (!isValidPos(copy.x, copy.y, graph) || graph[copy.y][copy.x].getType() == Node.Type.WALL)? 1 : 0;
+        count += (!isValidPos(copy, graph) || graph[copy.y][copy.x].getType() == Node.Types.WALL)? 1 : 0;
     }
     return (count < 3);
 }
@@ -26,7 +26,7 @@ function canClearWall(cur, graph) {
 function generateMaze_h(graph, difficulty) {
     let stack = [];
     let x, y;
-    const explored = Array(graph.length).fill(0).map((x) => Array(graph[0].length).fill(false));
+    const explored = Array(graph.length).fill(null).map((x) => Array(graph[0].length).fill(false));
     let dir = Math.round((Math.random() * 10)) % NUM_DIRS;
     let furthest = new Entry(0, 0, dir, true);
     stack.push(furthest);
@@ -35,7 +35,7 @@ function generateMaze_h(graph, difficulty) {
         if (explored[cur.y][cur.x] || canClearWall(cur, graph)) {
             continue;
         }
-        graph[cur.y][cur.x].setType(Node.Type.PATH);
+        graph[cur.y][cur.x].setType(Node.Types.PATH);
         explored[cur.y][cur.x] = true;
 
         if (cur.check) {
@@ -49,16 +49,16 @@ function generateMaze_h(graph, difficulty) {
                 if (i == cur.dir) {
                     continue;
                 }
-                x = cur.x + Directions[i].x;
-                y = cur.y + Directions[i].y;
-                if (isValidPos(x, y, graph)) {
+                x = cur.x + Directions[i].x,
+                y = cur.y + Directions[i].y
+                if (isValidPos({x:x, y:y}, graph)) {
                     stack.push(new Entry(x, y, i, !cur.check, cur.dist + 1));
                 }
             }
         }
-        x = cur.x + Directions[cur.dir].x;
-        y = cur.y + Directions[cur.dir].y;
-        if (isValidPos(x, y, graph)) {
+        x = cur.x + Directions[cur.dir].x,
+        y = cur.y + Directions[cur.dir].y
+        if (isValidPos({x:x, y:y}, graph)) {
             stack.push(new Entry(x, y, cur.dir, !cur.check, cur.dist + 1));
         }
     }
@@ -67,7 +67,7 @@ function generateMaze_h(graph, difficulty) {
     return furthest;
 }
 
-export function generateMaze(game, difficulty) {
+export function generateMaze(grid, difficulty) {
     // Choose Start & End Points 
     let index = Math.round(Math.random() * 10) % 4;
     let addend = (Math.round(Math.random() * 10) % 3) + 1;
@@ -78,7 +78,7 @@ export function generateMaze(game, difficulty) {
     const end = BOUNDARY_POINTS[(index + addend) % 4];
 
     // Partition Grid
-    let graph = game.grid.slice(1, game.grid.length - 1);
+    let graph = grid.slice(1, grid.length - 1);
     graph.forEach(function(row, i){
         this[i] = row.slice(1, row.length - 1);
     }, graph);

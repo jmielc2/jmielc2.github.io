@@ -1,4 +1,5 @@
 
+import { App } from "../App.js"
 import Cell from "./Cell.js"
 import Button from "./Button.js"
 
@@ -28,51 +29,51 @@ export default class MainMenu {
         this.update = this.startup;
     }
 
-    reset(p) {
+    reset() {
 
     }
 
-    init(p) {
-        PLAY_BTN.x = (PLAY_BTN.x)? PLAY_BTN.x : MainMenu.app.WIDTH / 2;
-        PLAY_BTN.y = (PLAY_BTN.y)? PLAY_BTN.y : MainMenu.app.HEIGHT / 2;
-        this.playBtn = new Button(p, PLAY_BTN);
+    init() {
+        PLAY_BTN.x = (PLAY_BTN.x)? PLAY_BTN.x : App.WIDTH / 2;
+        PLAY_BTN.y = (PLAY_BTN.y)? PLAY_BTN.y : App.HEIGHT / 2;
+        this.playBtn = new Button(PLAY_BTN);
     }
 
-    #refresh(p) {
-        p.clear();
-        p.background(0, 0, 0);
-        this.playBtn.update(p, MainMenu.app);
+    #refresh() {
+        App.canvas.clear();
+        App.canvas.background(0, 0, 0);
+        this.playBtn.update(MainMenu.app);
 
-        this.#drawUI(p, MainMenu.app);
+        this.#drawUI();
     }
 
-    startup(p) {
+    startup() {
         this.update = this.#refresh;
     }
 
-    pause(p) {
+    pause() {
         this.update = this.startup;
     }
 
-    #drawUI(p) {
-        p.rectMode(p.CENTER);
-        p.textSize(50);
-        p.strokeWeight(3);
-        p.stroke(255);
-        p.fill(0);
-        p.text(
+    #drawUI() {
+        App.canvas.rectMode(App.canvas.CENTER);
+        App.canvas.textSize(50);
+        App.canvas.strokeWeight(3);
+        App.canvas.stroke(255);
+        App.canvas.fill(0);
+        App.canvas.text(
             "L A B Y R I N T H",
-            MainMenu.app.WIDTH / 2,
-            MainMenu.app.HEIGHT / 3,
-            MainMenu.app.WIDTH
+            App.WIDTH / 2,
+            App.HEIGHT / 3,
+            App.WIDTH
         );
 
-        this.playBtn.draw(p);
+        this.playBtn.draw();
     }
 
     static app = null;
 
-    playBtnCallback = (function(p) {
+    playBtnCallback = (function() {
         MainMenu.app.setPage(MainMenu.app.Pages.GAME);
     }).bind(this);
 }

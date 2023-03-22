@@ -1,3 +1,4 @@
+import { App } from "../App.js"
 import Cell from "./Cell.js"
 
 const WALL_COLOR = {r:0, g:0, b:0};
@@ -7,7 +8,7 @@ const ENEMY_COLOR = {r:255, g:0, b:0};
 const DEBUG_COLOR = {r:0, g:255, b:0};
 
 export default class Node {
-    static Type = {
+    static Types = {
         WALL : {
             id:0,
             color : WALL_COLOR
@@ -39,8 +40,8 @@ export default class Node {
         this.reset();
     }
 
-    draw(p) {
-        this.cell.draw(p);
+    draw() {
+        this.cell.draw();
     }
 
     setType(type) {
@@ -53,6 +54,6 @@ export default class Node {
     }
 
     reset() {
-        this.setType(Node.Type.WALL);
+        this.setType(Node.Types.WALL);
     }
 }

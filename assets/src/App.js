@@ -19,11 +19,11 @@ function getDimensions() {
 export class App {
     static MAX_DIM_X = 37;
     static MAX_DIM_Y = 27;
-    static FPS = 24;
+    static FPS = 30;
     static canvas = null;
 
-    constructor(p) {
-        App.canvas = p;
+    constructor(canvas) {
+        App.canvas = canvas;
         this.Pages = {MAIN_MENU : new MainMenu(this), GAME : new Game(this)};
         this.curPage = this.Pages.MAIN_MENU;
     }
@@ -34,38 +34,38 @@ export class App {
         this.curPage = page;
     }
 
-    init(p) {
-        this.Pages.MAIN_MENU.init(p);
-        this.Pages.GAME.init(p);
+    init() {
+        this.Pages.MAIN_MENU.init();
+        this.Pages.GAME.init();
     }
 }
 
-export default function init(p) {
-    const app = new App(p);
+export default function init(canvas) {
+    const app = new App(canvas);
 
-    p.preload = function() {
-        app.font = p.loadFont("./assets/font/PixeloidSans.ttf");
+    canvas.preload = function() {
+        app.font = canvas.loadFont("./assets/font/PixeloidSans.ttf");
     }
 
-    p.setup = function() {
+    canvas.setup = function() {
         let dimensions = getDimensions();
-        app.DIM_X = dimensions.X;
-        app.DIM_Y = dimensions.Y;
-        app.WIDTH = dimensions.X * Cell.dim;
-        app.HEIGHT = dimensions.Y * Cell.dim;
-        p.createCanvas(
-            app.WIDTH,
-            app.HEIGHT,
-            p.P2D
+        App.DIM_X = dimensions.X;
+        App.DIM_Y = dimensions.Y;
+        App.WIDTH = dimensions.X * Cell.dim;
+        App.HEIGHT = dimensions.Y * Cell.dim;
+        canvas.createCanvas(
+            App.WIDTH,
+            App.HEIGHT,
+            canvas.P2D
         );
         
-        p.textAlign(p.CENTER, p.CENTER);
-        p.textFont(app.font);
-        p.frameRate(App.FPS);
-        app.init(p);
+        canvas.textAlign(canvas.CENTER, canvas.CENTER);
+        canvas.textFont(app.font);
+        canvas.frameRate(App.FPS);
+        app.init();
     }
 
-    p.draw = function() {
-        app.curPage.update(p);
+    canvas.draw = function() {
+        app.curPage.update();
     }
 }

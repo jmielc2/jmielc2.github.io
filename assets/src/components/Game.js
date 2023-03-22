@@ -1,4 +1,5 @@
 import Node from "./Node.js"
+import Grid from "./Grid.js"
 import { generateMaze } from "./utils/MazeUtils.js"
 import { getDistance } from "./utils/GameUtils.js"
 import Entity from "./Entity.js"
@@ -12,9 +13,9 @@ export const DOWN = 2;
 export const LEFT = 3;
 export const NUM_DIRS = 4;
 export const Directions = [
-    { x:0, y:1, key:null },
-    { x:1, y:0, key:null },
     { x:0, y:-1, key:null },
+    { x:1, y:0, key:null },
+    { x:0, y:1, key:null },
     { x:-1, y:0, key:null }
 ]
 
@@ -34,19 +35,15 @@ export default class Game {
         this.entities = new Set();
     }
 
-    reset(p) {
+    reset() {
         this.entities.clear();
-        this.grid.forEach((row) => {
-            row.forEach((node) => {
-                node.reset();
-            })
-        })
+        this.grid.reset();
         let difficulty = Game.Difficulty[(this.iter < Game.Difficulty.length)? this.iter : Game.Difficulty.length - 1]
         
         let mazeData = null;
         let i = 0;
         do {
-            mazeData = generateMaze(this, difficulty);
+            mazeData = generateMaze(this.grid.grid, difficulty);
             i++;
         } while (getDistance(mazeData.start, mazeData.enemy) < 6 && i < 3);
         this.initPlayer(difficulty, mazeData.start);
@@ -54,66 +51,56 @@ export default class Game {
         this.initEnemy(difficulty, mazeData.enemy);
     }
 
-    init(p) {
-        this.grid = Array(Game.app.DIM_Y).fill(0).map((x) => Array(Game.app.DIM_X).fill(0));
-        for (let i = 0; i < this.grid.length; i++) {
-            for (let j = 0; j < this.grid[0].length; j++) {
-                this.grid[i][j] = new Node(j, i);
-            }
-        }
-        let yOffset = Math.round((Game.app.DIM_Y - 3) / 3)
+    init() {
+        this.grid = new Grid();
+        let yOffset = Math.round((App.DIM_Y - 3) / 3)
         yOffset = (yOffset & 1)? yOffset : yOffset - 1;
         BOUNDARY_POINTS.push(
             {x:0, y:yOffset},
-            {x:Game.app.DIM_X - 1, y:yOffset},
-            {x:0, y:Game.app.DIM_Y - 1 - yOffset},
-            {x:Game.app.DIM_X - 1, y:Game.app.DIM_Y - 1 - yOffset}
+            {x:App.DIM_X - 1, y:yOffset},
+            {x:0, y:App.DIM_Y - 1 - yOffset},
+            {x:App.DIM_X - 1, y:App.DIM_Y - 1 - yOffset}
         );
     }
 
-    #refresh(p) {
+    #refresh() {
         // Update Enemy
         // Update Player
-        this.player.update(this.player, p.deltaTime);
+        this.player.update(App.canvas.deltaTime);
         // Recalculate Node Light Vals
 
-        p.clear();
-        this.#drawGrid(p);
+        App.canvas.clear();
+        this.grid.draw();
+
+        if (App.canvas.mouseIsPressed) {
+            this.reset();
+        }
     }
 
-    #drawGrid(p) {
-        p.rectMode(p.CORNER);
-        this.grid.forEach((row) => {
-            row.forEach((node) => {
-                node.draw(p);
-            });
-        });
-    }
-
-    startup(p) {
+    startup() {
         this.reset();
         this.update = this.#refresh;
     }
 
-    pause(p) {
+    pause() {
         this.update = this.startup;
     }
 
     initPlayer(difficulty, pos) {
         this.player = new Player(this, pos);
         this.entities.add(this.player);
-        this.grid[pos.y][pos.x].setType(Node.Type.PLAYER);
+        this.grid.setNodeType(pos, Node.Types.PLAYER);
     }
     
     initExit(difficulty, pos) {
         this.entities.add(new Entity(pos))
-        this.grid[pos.y][pos.x].setType(Node.Type.EXIT);
+        this.grid.setNodeType(pos, Node.Types.EXIT);
     }
     
     initEnemy(difficulty, pos) {
         this.enemy = new Enemy(this, pos);
         this.entities.add(this.enemy);
-        this.grid[pos.y][pos.x].setType(Node.Type.ENEMY);
+        this.grid.setNodeType(pos, Node.Types.ENEMY);
     }
 
     static app = null;

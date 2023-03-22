@@ -1,5 +1,5 @@
-export function isValidPos(x, y, graph) {
-    return !(x < 0 || y < 0 || y >= graph.length || x >= graph[0].length);
+export function isValidPos(pos, grid) {
+    return !(pos.x < 0 || pos.y < 0 || pos.y >= grid.length || pos.x >= grid[0].length);
 }
 
 export function getDistance(pos1, pos2) {

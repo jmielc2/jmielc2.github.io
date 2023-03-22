@@ -1,3 +1,5 @@
+import { App } from "../App.js"
+
 export default class Cell {
     static dim = 25;
 
@@ -9,13 +11,13 @@ export default class Cell {
         this.setColor(color);
     }
 
-    draw(p) {
-        p.rectMode(p.CORNER);
-        p.noStroke();
-        // p.stroke(255,0,0);  // For Debugging
-        // p.strokeWeight(1);
-        p.fill(this.color.r, this.color.g, this.color.b);
-        p.rect(this.x, this.y, this.width, this.height);
+    draw() {
+        App.canvas.rectMode(App.canvas.CORNER);
+        App.canvas.noStroke();
+        // App.canvas.stroke(255,0,0);  // For Debugging
+        // App.canvas.strokeWeight(1);
+        App.canvas.fill(this.color.r, this.color.g, this.color.b);
+        App.canvas.rect(this.x, this.y, this.width, this.height);
     }
 
     setColor(color) {

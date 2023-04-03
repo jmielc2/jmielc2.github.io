@@ -77,8 +77,8 @@ export default class Game {
     }
 
     startup() {
-        this.reset();
         this.level = 0;
+        this.reset();
         this.update = this.#refresh;
     }
 
@@ -112,10 +112,13 @@ export default class Game {
 
     nextLevel() {
         this.level++;
-        this.reset();
+        console.log("ummm.")
         if (this.level == Game.Difficulty.length) {
             Game.app.setPage(Game.app.Pages.MAIN_MENU);
+            this.level = 0;
+            return;
         }
+        this.reset();
     }
 
     static app = null;

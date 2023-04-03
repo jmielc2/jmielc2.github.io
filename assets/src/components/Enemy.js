@@ -74,6 +74,8 @@ export default class Enemy extends Entity {
         if (this.time >= (this.updateDelay * (1000 / App.FPS))) {
             if (this.#countDirections() > 2) {
                 this.#chooseDirection();
+                this.setBehavior(Enemy.Modes.THINKING);
+                return;
             }
             if (!Enemy.game.grid.moveEntity(this, this.dir)) {
                 this.#chooseDirection();
@@ -92,12 +94,26 @@ export default class Enemy extends Entity {
         }
     }
 
+    static #thinking(deltaTime) {
+        this.time += deltaTime;
+        if (this.time >= (this.updateDelay * (1000 / App.FPS))) {
+            Enemy.game.grid.moveEntity(this, this.dir);
+            this.setBehavior(Enemy.Modes.DEFAULT);
+            this.time = 0;
+        }
+    }
+
     static game;
 
     static Modes = {
         DEFAULT : {
             update : Enemy.#default,
-            updateDelay : 9,
+            updateDelay : 12,
+            color : {r:200, g:100, b:100}
+        },
+        THINKING : {
+            update : Enemy.#thinking,
+            updateDelay : 36,
             color : {r:200, g:100, b:100}
         }
     }

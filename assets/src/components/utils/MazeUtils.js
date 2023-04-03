@@ -43,7 +43,11 @@ function generateMaze_h(graph, difficulty) {
                 furthest = cur;
             }
             if (Math.floor(Math.random() * 100) < difficulty) {
-                cur.dir = (Math.floor(Math.random() * 10) % NUM_DIRS);
+                let temp;
+                do {
+                    temp = (Math.floor(Math.random() * NUM_DIRS))
+                } while (temp == cur.dir);
+                cur.dir = temp;
             }
             for (let i = 0; i < NUM_DIRS; i++) {
                 if (i == cur.dir) {

@@ -31,7 +31,7 @@ export default class App {
 
     setPage(page) {
         this.curPage.pause();
-        this.curPage.update = this.curPage.startup;
+        // this.curPage.update = this.curPage.startup;
         this.curPage = page;
     }
 

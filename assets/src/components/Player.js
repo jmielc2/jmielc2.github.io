@@ -61,7 +61,7 @@ export default class Player extends Entity {
                         return;
                     case (Entity.Types.ENEMY):
                         Player.game.reset();
-                        break;
+                        return;
                     }
                 });
             }

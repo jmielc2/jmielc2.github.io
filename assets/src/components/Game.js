@@ -13,10 +13,10 @@ export const DOWN = 2;
 export const LEFT = 3;
 export const NUM_DIRS = 4;
 export const Directions = [
-    { x:0, y:-1, key:null },
-    { x:1, y:0, key:null },
-    { x:0, y:1, key:null },
-    { x:-1, y:0, key:null }
+    { x:0, y:-1, idx:UP, key:null },
+    { x:1, y:0, idx:RIGHT, key:null },
+    { x:0, y:1, idx:DOWN, key:null },
+    { x:-1, y:0, idx:LEFT, key:null }
 ]
 
 export const BOUNDARY_POINTS = [];
@@ -106,7 +106,7 @@ export default class Game {
             this.entities.add(this.enemy);
             this.grid.addEntity(this.enemy);
         } else {
-            this.enemy = new Entity(pos, Entity.Types.NONE);
+             this.enemy = new Entity(pos, Entity.Types.NONE);
         }
     }
 

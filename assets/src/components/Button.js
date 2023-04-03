@@ -1,4 +1,4 @@
-import { App } from "../App.js"
+import App from "../App.js"
 import Cell from "./Cell.js"
 
 const TEXT_SIZE = 26;

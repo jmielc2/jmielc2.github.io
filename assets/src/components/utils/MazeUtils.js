@@ -27,7 +27,7 @@ function generateMaze_h(graph, difficulty) {
     let stack = [];
     let x, y;
     const explored = Array(graph.length).fill(null).map((x) => Array(graph[0].length).fill(false));
-    let dir = Math.round((Math.random() * 10)) % NUM_DIRS;
+    let dir = Math.floor((Math.random() * 10)) % NUM_DIRS;
     let furthest = new Entry(0, 0, dir, true);
     stack.push(furthest);
     while (stack.length) {
@@ -42,8 +42,8 @@ function generateMaze_h(graph, difficulty) {
             if (cur.dist > furthest.dist) {
                 furthest = cur;
             }
-            if (Math.round(Math.random() * 100) < difficulty) {
-                cur.dir = (Math.round(Math.random() * 10) % NUM_DIRS);
+            if (Math.floor(Math.random() * 100) < difficulty) {
+                cur.dir = (Math.floor(Math.random() * 10) % NUM_DIRS);
             }
             for (let i = 0; i < NUM_DIRS; i++) {
                 if (i == cur.dir) {
@@ -69,15 +69,13 @@ function generateMaze_h(graph, difficulty) {
 
 export function generateMaze(grid, difficulty) {
     // Choose Start & End Points 
-    let index = Math.round(Math.random() * 10) % 4;
-    let addend = (Math.round(Math.random() * 10) % 3) + 1;
+    let index = Math.floor(Math.random() * 10) % 4;
+    let addend = (Math.floor(Math.random() * 10) % 3) + 1;
     if (!(addend & 1)) {
         addend += (Math.random() > 0.5)? 1 : -1;
     }
     const start = Object.assign({}, BOUNDARY_POINTS[index]);
     const end = Object.assign({}, BOUNDARY_POINTS[(index + addend) % 4]);
-    // const start = BOUNDARY_POINTS[index];
-    // const end = BOUNDARY_POINTS[(index + addend) % 4];
 
     // Partition Grid
     let graph = grid.slice(1, grid.length - 1);

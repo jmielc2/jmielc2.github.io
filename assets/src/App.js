@@ -5,19 +5,19 @@ import Game from "./components/Game.js"
 
 function getDimensions() {
     let x = Math.min(
-        Math.round((window.innerWidth - Cell.dim) / Cell.dim),
+        Math.floor((window.innerWidth - Cell.dim) / Cell.dim),
         App.MAX_DIM_X
     );
     x -= ((x - 3) & 1);
     let y = Math.min(
-        Math.round((window.innerHeight - Cell.dim) / Cell.dim),
+        Math.floor((window.innerHeight - Cell.dim) / Cell.dim),
         App.MAX_DIM_Y
     );
     y -= ((y - 3) & 1);
     return {X : x, Y : y};
 }
 
-export class App {
+export default class App {
     static MAX_DIM_X = 37;
     static MAX_DIM_Y = 27;
     static FPS = 30;
@@ -41,7 +41,7 @@ export class App {
     }
 }
 
-export default function init(canvas) {
+export function init(canvas) {
     const app = new App(canvas);
 
     canvas.preload = function() {

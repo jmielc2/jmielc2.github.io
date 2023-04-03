@@ -5,7 +5,7 @@ import { getDistance } from "./utils/GameUtils.js"
 import Entity from "./Entity.js"
 import Player from "./Player.js"
 import Enemy from "./Enemy.js"
-import { App } from "../App.js"
+import App from "../App.js"
 
 export const UP = 0;
 export const RIGHT = 1;
@@ -50,14 +50,15 @@ export default class Game {
             console.log(mazeData.start.x);
             console.log(BOUNDARY_POINTS);
         }
-        this.initPlayer(difficulty, mazeData.start);
+
         this.initExit(difficulty, mazeData.end);
+        this.initPlayer(difficulty, mazeData.start);
         this.initEnemy(difficulty, mazeData.enemy);
     }
 
     init() {
         this.grid = new Grid();
-        let yOffset = Math.round((App.DIM_Y - 3) / 3)
+        let yOffset = Math.floor((App.DIM_Y - 3) / 3)
         yOffset = (yOffset & 1)? yOffset : yOffset - 1;
         BOUNDARY_POINTS.push(
             {x:0, y:yOffset},
@@ -68,10 +69,8 @@ export default class Game {
     }
 
     #refresh() {
-        // Update Enemy
-        // Update Player
+        this.enemy.update(App.canvas.deltaTime);
         this.player.update(App.canvas.deltaTime);
-        // Recalculate Node Light Vals
 
         App.canvas.clear();
         this.grid.draw();
@@ -90,18 +89,25 @@ export default class Game {
     initPlayer(difficulty, pos) {
         this.player = new Player(this, pos);
         this.entities.add(this.player);
-        this.grid.setNodeType(pos, Node.Types.PLAYER);
+        this.grid.setNodeType(pos, Node.Types.PATH);
+        this.grid.addEntity(this.player);
     }
     
     initExit(difficulty, pos) {
-        this.entities.add(new Entity(pos))
-        this.grid.setNodeType(pos, Node.Types.EXIT);
+        this.exit = new Entity(pos, Entity.Types.EXIT);
+        this.entities.add(this.exit)
+        this.grid.setNodeType(pos, Node.Types.PATH);
+        this.grid.addEntity(this.exit);
     }
     
     initEnemy(difficulty, pos) {
-        this.enemy = new Enemy(this, pos);
-        this.entities.add(this.enemy);
-        this.grid.setNodeType(pos, Node.Types.ENEMY);
+        if (this.level > 0) {
+            this.enemy = new Enemy(this, pos);
+            this.entities.add(this.enemy);
+            this.grid.addEntity(this.enemy);
+        } else {
+            this.enemy = new Entity(pos, Entity.Types.NONE);
+        }
     }
 
     nextLevel() {

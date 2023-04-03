@@ -1,12 +1,11 @@
-import { App } from "../App.js"
+import App from "../App.js"
 import Entity from "./Entity.js"
-import Node from "./Node.js"
+import Cell from "./Cell.js"
 import { Directions, NUM_DIRS } from "./Game.js"
-import { isValidPos } from "./utils/GameUtils.js"
 
 export default class Player extends Entity {
     constructor(game, pos) {
-        super(pos);
+        super(pos, Entity.Types.PLAYER);
         Player.game = game;
         this.setBehavior(Player.Modes.DEFAULT);
         this.time = 0;
@@ -18,6 +17,7 @@ export default class Player extends Entity {
         this.updateDelay = mode.updateDelay;
         this.inputDelay = mode.inputDelay;
         this.update = mode.update;
+        this.color = mode.color;
     }
 
     #getDirection() {
@@ -32,28 +32,38 @@ export default class Player extends Entity {
         return (count == 1)? dir : null;
     }
 
+    draw() {
+        App.canvas.fill(this.color.r, this.color.g, this.color.b);
+        App.canvas.circle(
+            this.pos.x * Cell.dim + (Cell.dim / 2),
+            this.pos.y * Cell.dim + (Cell.dim / 2),
+            Cell.dim
+        );
+    }
+
     static #default(deltaTime) {
         this.time += deltaTime;
         this.input += deltaTime;
-        if (this.input > (this.inputDelay * (1000 / App.FPS)) && App.canvas.keyIsPressed) {
+        if (this.input >= (this.inputDelay * (1000 / App.FPS)) && App.canvas.keyIsPressed) {
             this.dir = this.#getDirection()
             if (this.dir) {
                 this.input = 0;
             }
         }
-        if (this.time > (this.updateDelay * (1000 / App.FPS))) {
+        if (this.time >= (this.updateDelay * (1000 / App.FPS))) {
             if (this.dir) {
-                const next = this.calcMove(this.dir);
-                if (Player.game.grid.isValidPos(next)) {
-                    if (Player.game.grid.getNodeType(next) == Node.Types.EXIT) {
+                Player.game.grid.moveEntity(this, this.dir);
+                Player.game.grid.getEntities(this.pos).forEach((entity) => {
+                    const type = entity.getType();
+                    switch (type) {
+                    case (Entity.Types.EXIT):
                         Player.game.nextLevel();
                         return;
-                    } else if (Player.game.grid.getNodeType(next) == Node.Types.PATH) {
-                        Player.game.grid.setNodeType(this.pos, Node.Types.PATH);
-                        this.move(this.dir);
-                        Player.game.grid.setNodeType(this.pos, Node.Types.PLAYER);
+                    case (Entity.Types.ENEMY):
+                        Player.game.reset();
+                        break;
                     }
-                }
+                });
             }
             this.time = 0;
             this.dir = null;
@@ -65,8 +75,9 @@ export default class Player extends Entity {
     static Modes = {
         DEFAULT : {
             update : Player.#default,
-            updateDelay : 5,
+            updateDelay : 6,
             inputDelay : 2,
+            color : {r:100, g:100, b:200}
         }
     }
 }

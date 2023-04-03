@@ -1,5 +1,6 @@
-import { App } from "../App.js"
+import App from "../App.js"
 import Node from "./Node.js"
+import { Directions, NUM_DIRS } from "./Game.js"
 import { isValidPos } from "./utils/GameUtils.js";
 
 export default class Grid {
@@ -7,7 +8,8 @@ export default class Grid {
         this.grid = Array(App.DIM_Y).fill(0).map((x) => Array(App.DIM_X).fill(0));
         for (let i = 0; i < this.grid.length; i++) {
             for (let j = 0; j < this.grid[0].length; j++) {
-                this.grid[i][j] = new Node(j, i);
+                const pos = {x:j, y:i};
+                this.grid[i][j] = new Node(pos);
             }
         }
     }
@@ -28,16 +30,39 @@ export default class Grid {
         return this.grid[pos.y][pos.x].getType();
     }
 
+    addEntity(entity) {
+        return this.grid[entity.pos.y][entity.pos.x].addEntity(entity);
+    }
+
+    removeEntity(entity) {
+        return this.grid[entity.pos.y][entity.pos.x].removeEntity(entity);
+    }
+
+    moveEntity(entity, dir) {
+        const next = entity.calcMove(dir);
+        if (this.isAccessible(next)) {
+            this.removeEntity(entity);
+            entity.move(dir);
+            this.addEntity(entity);
+            return true;
+        }
+        return false;
+    }
+
+    getEntities(pos) {
+        return this.grid[pos.y][pos.x].entities;
+    }
+
     draw() {
         App.canvas.rectMode(App.canvas.CORNER);
         this.grid.forEach((row) => {
             row.forEach((node) => {
-                node.draw(App.canvas);
+                node.draw();
             });
         });
     }
 
-    isValidPos(pos) {
-        return isValidPos(pos, this.grid);
+    isAccessible(pos) {
+        return (isValidPos(pos, this.grid) && this.getNodeType(pos) == Node.Types.PATH);
     }
 }

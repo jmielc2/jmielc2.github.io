@@ -1,47 +1,47 @@
-import { App } from "../App.js"
+import App from "../App.js"
 import Cell from "./Cell.js"
 
 const WALL_COLOR = {r:0, g:0, b:0};
 const GROUND_COLOR = {r:255, g:255, b:255};
-const PLAYER_COLOR = {r:0, g:0, b:255};
-const ENEMY_COLOR = {r:255, g:0, b:0};
 const DEBUG_COLOR = {r:0, g:255, b:0};
 
 export default class Node {
     static Types = {
         WALL : {
-            id:0,
             color : WALL_COLOR
         },
         PATH : {
-            id:1,
             color : GROUND_COLOR
         },
-        PLAYER : {
-            id:2, 
-            color : PLAYER_COLOR
-        },
-        ENEMY : {
-            id:3,
-            color : ENEMY_COLOR
-        },
-        EXIT : {
-            id:4,
-            color : DEBUG_COLOR
-        },
         DEBUG : {
-            id:null,
             color : DEBUG_COLOR
         }
     };
     
-    constructor(x, y) {
-        this.cell = new Cell(x * Cell.dim, y * Cell.dim, null, Cell.dim, Cell.dim);
+    constructor(pos) {
+        this.pos = Object.assign({}, pos);
+        this.cell = new Cell(pos.x * Cell.dim, pos.y * Cell.dim, null, Cell.dim, Cell.dim);
+        this.entities = new Set();
         this.reset();
+    }
+
+    addEntity(entity) {
+        return this.entities.add(entity);
+    }
+
+    removeEntity(entity) {
+        return this.entities.delete(entity);
+    }
+
+    hasEntity(entity) {
+        return this.entities.has(entity);
     }
 
     draw() {
         this.cell.draw();
+        this.entities.forEach((entity) => {
+            entity.draw();
+        });
     }
 
     setType(type) {
@@ -55,5 +55,6 @@ export default class Node {
 
     reset() {
         this.setType(Node.Types.WALL);
+        this.entities.clear();
     }
 }

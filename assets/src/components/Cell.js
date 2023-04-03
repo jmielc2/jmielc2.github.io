@@ -1,4 +1,4 @@
-import { App } from "../App.js"
+import App from "../App.js"
 
 export default class Cell {
     static dim = 25;

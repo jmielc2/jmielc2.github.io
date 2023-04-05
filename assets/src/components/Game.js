@@ -78,6 +78,10 @@ export default class Game {
 
     startup() {
         this.level = 0;
+        this.update = this.#beginLevel;
+    }
+
+    #beginLevel() {
         this.reset();
         this.update = this.#refresh;
     }
@@ -112,13 +116,12 @@ export default class Game {
 
     nextLevel() {
         this.level++;
-        console.log("ummm.")
         if (this.level == Game.Difficulty.length) {
             Game.app.setPage(Game.app.Pages.MAIN_MENU);
-            this.level = 0;
             return;
+        } else {
+            this.update = this.#beginLevel;
         }
-        this.reset();
     }
 
     static app = null;

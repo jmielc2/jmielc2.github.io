@@ -3,7 +3,7 @@ import Cell from "./Cell.js"
 import Entity from "./Entity.js"
 
 const THICKNESS = 2;
-const COLOR = {r:255, g:205, b:45}
+const COLOR = {r:210, g:175, b:55}
 
 class Ring {
     constructor(pos) {

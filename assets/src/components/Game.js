@@ -70,8 +70,8 @@ export default class Game {
         this.entities.forEach((entity) => {
             entity.draw();
         });
-        this.player.draw();
         this.enemy.draw();
+        this.player.draw();
     }
 
     #startup() {

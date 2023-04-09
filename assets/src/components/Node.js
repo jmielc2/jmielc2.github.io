@@ -15,9 +15,9 @@ export default class Node {
         },
         PATH : {
             colors : [
-                {r:255, g:255, b:255}, // Darkest
-                {r: 235, g:235, b:235}, // Medium
-                {r:215, g:215, b:215}, // Lightest
+                {r: 225, g:225, b:225}, // Lightest
+                {r:215, g:215, b:215}, // Medium
+                {r:195, g:195, b:195}, // Darkest
             ],
             id : 1
         }, 

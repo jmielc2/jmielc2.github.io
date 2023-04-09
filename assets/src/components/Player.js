@@ -114,7 +114,7 @@ export default class Player extends Entity {
     static Modes = {
         DEFAULT : {
             update : Player.#default,
-            updateDelay : 6,
+            updateDelay : 5,
             inputDelay : 2,
             color : {r:100, g:100, b:200}
         }

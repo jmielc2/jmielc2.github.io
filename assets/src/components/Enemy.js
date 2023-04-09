@@ -117,12 +117,12 @@ export default class Enemy extends Entity {
     static Modes = {
         DEFAULT : {
             update : Enemy.#default,
-            updateDelay : 12,
+            updateDelay : 10,
             color : {r:200, g:100, b:100}
         },
         THINKING : {
             update : Enemy.#thinking,
-            updateDelay : 36,
+            updateDelay : 30,
             color : {r:200, g:100, b:100}
         }
     }

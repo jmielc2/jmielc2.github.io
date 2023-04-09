@@ -1,6 +1,6 @@
 import Cell from "./components/Cell.js"
-import MainMenu from "./components/MainMenu.js"
-import Game from "./components/Game.js"
+import MainMenu from "./pages/MainMenu.js"
+import Game from "./pages/Game.js"
 
 
 function getDimensions() {
@@ -44,7 +44,7 @@ export function init(canvas) {
     const app = new App(canvas);
 
     canvas.preload = function() {
-        app.font = canvas.loadFont("./assets/font/PixeloidSans.ttf");
+        app.font = canvas.loadFont("../assets/font/PixeloidSans.ttf");
     }
 
     canvas.setup = function() {

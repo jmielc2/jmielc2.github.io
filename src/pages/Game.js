@@ -1,11 +1,10 @@
-import Node from "./Node.js"
-import Grid from "./Grid.js"
-import { generateMaze } from "./utils/MazeUtils.js"
-import { getDistance } from "./utils/GameUtils.js"
-import Entity from "./Entity.js"
-import Player from "./Player.js"
-import Enemy from "./Enemy.js"
-import Rope from "./Rope.js"
+import Node from "../components/Node.js"
+import Grid from "../components/Grid.js"
+import { generateMaze } from "../components/utils/MazeUtils.js"
+import Entity from "../components/Entity.js"
+import Player from "../components/Player.js"
+import Enemy from "../components/Enemy.js"
+import Rope from "../components/Rope.js"
 import App from "../App.js"
 
 export const UP = 0;

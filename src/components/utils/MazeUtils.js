@@ -1,5 +1,5 @@
 import Node from "../Node.js"
-import { Directions, NUM_DIRS, BOUNDARY_POINTS } from "../Game.js"
+import { Directions, NUM_DIRS, BOUNDARY_POINTS } from "../../pages/Game.js"
 import { isValidPos } from "./GameUtils.js"
 
 class Entry {

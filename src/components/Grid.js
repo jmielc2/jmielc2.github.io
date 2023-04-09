@@ -1,6 +1,6 @@
 import App from "../App.js"
 import Node from "./Node.js"
-import { Directions, NUM_DIRS } from "./Game.js"
+import { Directions, NUM_DIRS } from "../pages/Game.js"
 import { isValidPos } from "./utils/GameUtils.js";
 
 export default class Grid {

@@ -2,7 +2,7 @@ import App from "../App.js"
 import Entity from "./Entity.js"
 import Cell from "./Cell.js"
 import Thread from "./Thread.js"
-import { Directions, NUM_DIRS } from "./Game.js"
+import { Directions, NUM_DIRS } from "../pages/Game.js"
 
 export default class Player extends Entity {
     constructor(game) {

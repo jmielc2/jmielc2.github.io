@@ -1,7 +1,7 @@
 
 import App from "../App.js"
-import Cell from "./Cell.js"
-import Button from "./Button.js"
+import Cell from "../components/Cell.js"
+import Button from "../components/Button.js"
 
 const PLAY_BTN = {
     x : null,

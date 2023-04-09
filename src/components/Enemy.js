@@ -1,7 +1,7 @@
 import App from "../App.js"
 import Entity from "./Entity.js"
 import Cell from "./Cell.js"
-import { Directions, NUM_DIRS } from "./Game.js"
+import { Directions, NUM_DIRS } from "../pages/Game.js"
 
 export default class Enemy extends Entity {
     constructor(game) {

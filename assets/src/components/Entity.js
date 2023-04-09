@@ -9,20 +9,29 @@ export default class Entity {
         EXIT : {
             id : 2,
         },
+        THREAD  : {
+            id : 3,
+        },
+        ROPE : {
+            id : 4,
+        },
         NONE : {
             id : null,
         }
     }
 
-    constructor(pos, type) {
-        this.pos = Object.assign({}, pos);
+    constructor(type) {
+        this.pos = null;
         this.setType(type);
+    }
+
+    setPos(pos) {
+        this.pos = Object.assign({}, pos);
     }
 
     move(dir) {
         this.pos.x += dir.x;
         this.pos.y += dir.y;
-
     }
 
     calcMove(dir) {
@@ -30,6 +39,10 @@ export default class Entity {
     }
 
     draw() {
+        return;
+    }
+
+    reset() {
         return;
     }
 

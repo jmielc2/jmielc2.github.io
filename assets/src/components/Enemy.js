@@ -4,14 +4,13 @@ import Cell from "./Cell.js"
 import { Directions, NUM_DIRS } from "./Game.js"
 
 export default class Enemy extends Entity {
-    constructor(game, pos) {
-        super(pos, Entity.Types.ENEMY);
+    constructor(game) {
+        super(Entity.Types.ENEMY);
         Enemy.game = game;
         this.setBehavior(Enemy.Modes.DEFAULT);
         this.time = 0;
         this.dir = Directions[Math.floor(Math.random() * NUM_DIRS)];
-        this.explored = Array(App.DIM_Y).fill(0).map((x) => Array(App.DIM_X).fill(false));
-        this.explored[this.pos.y][this.pos.x] = true;
+        this.explored = null;
     }
 
     setBehavior(mode) {
@@ -20,12 +19,22 @@ export default class Enemy extends Entity {
         this.color = mode.color;
     }
 
+    start(pos) {
+        this.setBehavior(Enemy.Modes.DEFAULT);
+        this.time = 0;
+        this.dir = Directions[Math.floor(Math.random() * NUM_DIRS)];
+        this.explored = Array(App.DIM_Y).fill(0).map((x) => Array(App.DIM_X).fill(false));
+        this.setPos(pos);
+        this.explored[this.pos.y][this.pos.x] = true;
+    }
+
     draw() {
+        App.canvas.noStroke();
         App.canvas.fill(this.color.r, this.color.g, this.color.b);
         App.canvas.circle(
             this.pos.x * Cell.dim + (Cell.dim / 2),
             this.pos.y * Cell.dim + (Cell.dim / 2),
-            Cell.dim
+            Cell.dim * 0.9
         );
     }
 

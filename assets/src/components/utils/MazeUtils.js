@@ -74,12 +74,8 @@ function generateMaze_h(graph, difficulty) {
 export function generateMaze(grid, difficulty) {
     // Choose Start & End Points 
     let index = Math.floor(Math.random() * 10) % 4;
-    let addend = (Math.floor(Math.random() * 10) % 3) + 1;
-    if (!(addend & 1)) {
-        addend += (Math.random() > 0.5)? 1 : -1;
-    }
     const start = Object.assign({}, BOUNDARY_POINTS[index]);
-    const end = Object.assign({}, BOUNDARY_POINTS[(index + addend) % 4]);
+    const end = Object.assign({}, BOUNDARY_POINTS[(index + 2) % 4]);
 
     // Partition Grid
     let graph = grid.slice(1, grid.length - 1);
@@ -91,6 +87,6 @@ export function generateMaze(grid, difficulty) {
     return {
         start : start,
         end : end,
-        enemy : generateMaze_h(graph, difficulty)
+        furthest : generateMaze_h(graph, difficulty)
     };
 }

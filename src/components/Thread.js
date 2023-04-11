@@ -3,7 +3,7 @@ import Entity from "./Entity.js"
 import Cell from "./Cell.js"
 
 const THICKNESS = 3;
-const COLOR = {r:255, g:205, b:45}
+const COLOR = {r:210, g:175, b:55}
 
 export default class Thread extends Entity {
     constructor(pos, dir) {

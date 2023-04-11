@@ -7,17 +7,17 @@ export default class Node {
     static Types = {
         WALL : {
             colors : [
-                {r:0, g:0, b:0}, // Darkest
-                {r:20, g:20, b:20}, // Medium
-                {r:40, g:40, b:40}, // Lighest
+                {r:25, g:10, b:0}, // Darkest
+                {r:50, g:25, b:0}, // Medium
+                {r:75, g:40, b:0}, // Lighest
             ],
             id : 0
         },
         PATH : {
             colors : [
-                {r: 225, g:225, b:225}, // Lightest
-                {r:215, g:215, b:215}, // Medium
-                {r:195, g:195, b:195}, // Darkest
+                {r:255, g:250, b:230}, // Lightest
+                {r: 255, g:245, b:205}, // Medium
+                {r:255, g:235, b:180}, // Darkest
             ],
             id : 1
         }, 

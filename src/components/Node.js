@@ -1,21 +1,21 @@
-import App from "../App.js"
+// import App from "../App.js"
 import Cell from "./Cell.js"
 
-const AMBIENT = 0.05;
+const AMBIENT = 0.07;
 
 export default class Node {
     static Types = {
         WALL : {
             colors : [
-                {r:25, g:10, b:0}, // Darkest
-                {r:50, g:25, b:0}, // Medium
-                {r:75, g:40, b:0}, // Lighest
+                {r:105, g:61, b:48}, // Darkest
+                {r:90, g:65, b:40}, // Medium
+                {r:95, g:60, b:20}, // Lighest
             ],
             id : 0
         },
         PATH : {
             colors : [
-                {r:255, g:250, b:230}, // Lightest
+                {r:245, g:240, b:220}, // Lightest
                 {r: 255, g:245, b:205}, // Medium
                 {r:255, g:235, b:180}, // Darkest
             ],
@@ -50,7 +50,7 @@ export default class Node {
     }
 
     draw() {
-        this.cell.draw();
+        this.cell.draw(this.intensity);
     }
 
     setType(type) {
@@ -62,9 +62,17 @@ export default class Node {
         return this.type;
     }
 
+    setIntensity(val = AMBIENT) {
+        this.intensity = val;
+    }
+
+    getIntensity() {
+        return this.intensity;
+    }
+
     reset() {
         this.setType(Node.Types.WALL);
         this.entities.clear();
-        this.intensity = AMBIENT;
+        this.setIntensity(AMBIENT);
     }
 }

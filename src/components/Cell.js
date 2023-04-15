@@ -8,18 +8,22 @@ export default class Cell {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.setColor(color);
+        this.color = color;
     }
 
-    draw() {
+    draw(intensity = 1) {
         App.canvas.rectMode(App.canvas.CORNER);
         App.canvas.noStroke();
-        App.canvas.fill(this.color.r, this.color.g, this.color.b);
+        App.canvas.fill(this.color.r * intensity, this.color.g * intensity, this.color.b * intensity);
         App.canvas.rect(this.x, this.y, this.width, this.height);
     }
 
     setColor(color) {
         this.color = color;
+    }
+
+    getColor() {
+        return this.color;
     }
 
     setPosition(x, y) {

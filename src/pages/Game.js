@@ -2,9 +2,11 @@ import Node from "../components/Node.js"
 import Grid from "../components/Grid.js"
 import { generateMaze } from "../components/utils/MazeUtils.js"
 import Entity from "../components/Entity.js"
+import Exit from "../components/Exit.js"
 import Player from "../components/Player.js"
 import Enemy from "../components/Enemy.js"
 import Rope from "../components/Rope.js"
+import Thread from "../components/Thread.js"
 import App from "../App.js"
 
 export const UP = 0;
@@ -33,6 +35,7 @@ export default class Game {
         this.update = this.#startup;
         this.level = 0;
         this.entities = new Set();
+        Thread.setGame(this);
     }
 
     reset() {
@@ -57,20 +60,24 @@ export default class Game {
             {x:0, y:App.DIM_Y - 1 - yOffset},
         );
         this.player = new Player(this);
-        this.exit = new Entity(Entity.Types.EXIT);
+        this.exit = new Exit(this, Entity.Types.EXIT);
     }
 
     #refresh() {
-        this.enemy.update(App.canvas.deltaTime);
-        this.player.update(App.canvas.deltaTime);
+        this.grid.grid.forEach((row) => {
+            row.forEach((node) => {
+                node.setIntensity();
+            });
+        });
+        this.entities.forEach((entity) => {
+            entity.update(App.canvas.deltaTime);
+        });
 
         App.canvas.clear();
         this.grid.draw();
         this.entities.forEach((entity) => {
             entity.draw();
         });
-        this.enemy.draw();
-        this.player.draw();
     }
 
     #startup() {
@@ -126,8 +133,6 @@ export default class Game {
         } else if (this.level > 1) {
             this.enemy.start(pos);
             this.addEntity(this.enemy);
-        } else {
-            this.enemy = new Entity(Entity.Types.NONE);
         }
     }
 

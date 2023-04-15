@@ -17,6 +17,8 @@ export default class Enemy extends Entity {
         this.updateDelay = mode.updateDelay;
         this.update = mode.update;
         this.color = mode.color;
+        this.radius = mode.radius;
+        this.brightness = mode.brightness;
     }
 
     start(pos) {
@@ -84,6 +86,7 @@ export default class Enemy extends Entity {
             if (this.#countDirections() > 2) {
                 this.#chooseDirection();
                 this.setBehavior(Enemy.Modes.THINKING);
+                this.drawSpotlight(Enemy.game.grid, this.radius, this.brightness);
                 return;
             }
             if (!Enemy.game.grid.moveEntity(this, this.dir)) {
@@ -101,6 +104,7 @@ export default class Enemy extends Entity {
             this.explored[this.pos.y][this.pos.x] = true;
             this.time = 0;
         }
+        this.drawSpotlight(Enemy.game.grid, this.radius, this.brightness);
     }
 
     static #thinking(deltaTime) {
@@ -110,6 +114,7 @@ export default class Enemy extends Entity {
             this.setBehavior(Enemy.Modes.DEFAULT);
             this.time = 0;
         }
+        this.drawSpotlight(Enemy.game.grid, this.radius, this.brightness);
     }
 
     static game;
@@ -118,12 +123,16 @@ export default class Enemy extends Entity {
         DEFAULT : {
             update : Enemy.#default,
             updateDelay : 10,
-            color : {r:200, g:100, b:100}
+            color : {r:200, g:100, b:100},
+            radius : 3,
+            brightness : 0.2
         },
         THINKING : {
             update : Enemy.#thinking,
             updateDelay : 30,
-            color : {r:200, g:100, b:100}
+            color : {r:200, g:100, b:100},
+            radius : 3,
+            brightness : 0.2
         }
     }
 }

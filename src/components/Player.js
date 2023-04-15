@@ -20,6 +20,8 @@ export default class Player extends Entity {
         this.inputDelay = mode.inputDelay;
         this.update = mode.update;
         this.color = mode.color;
+        this.radius = mode.radius;
+        this.brightness = mode.brightness;
     }
 
     reset() {
@@ -31,7 +33,6 @@ export default class Player extends Entity {
     }
 
     start(pos) {
-        this.setBehavior(Player.Modes.DEFAULT);
         this.time = 0;
         this.input = this.inputDelay;
         this.dir = null;
@@ -95,6 +96,7 @@ export default class Player extends Entity {
                             return;
                         case (Entity.Types.ROPE):
                             Player.game.removeEntity(entity);
+                            this.setBehavior(Player.Modes.W_ROPE);
                             this.hasThread = true;
                             return;
                         }
@@ -107,6 +109,7 @@ export default class Player extends Entity {
             this.time = 0;
             this.dir = null;
         }
+        this.drawSpotlight(Player.game.grid, this.radius, this.brightness);
     }
 
     static game;
@@ -114,9 +117,19 @@ export default class Player extends Entity {
     static Modes = {
         DEFAULT : {
             update : Player.#default,
-            updateDelay : 5,
+            updateDelay : 6,
             inputDelay : 2,
-            color : {r:100, g:100, b:200}
+            color : {r:100, g:100, b:200},
+            radius : 2,
+            brightness : 0.3,
+        },
+        W_ROPE : {
+            update : Player.#default,
+            updateDelay : 6,
+            inputDelay : 2,
+            color : {r:100, g:100, b:200},
+            radius : 3,
+            brightness : 0.4,
         }
     }
 }

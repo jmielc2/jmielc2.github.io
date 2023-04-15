@@ -22,4 +22,14 @@ export default class Thread extends Entity {
             (this.pos.y + this.dir.y) * Cell.dim + (Cell.dim / 2),
         );
     }
+
+    update(deltaTime) {
+        this.drawSpotlight(Thread.game.grid, 1, 0.1);
+    }
+
+    static setGame(game) {
+        Thread.game = game;
+    }
+
+    static game;
 }

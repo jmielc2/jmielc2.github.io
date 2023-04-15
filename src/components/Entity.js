@@ -1,3 +1,5 @@
+import { getDistance } from "./utils/GameUtils.js"
+
 export default class Entity {
     static Types = {
         ENEMY : {
@@ -42,11 +44,29 @@ export default class Entity {
         return;
     }
 
+    drawSpotlight(grid, radius, brightness) {
+        const startX = this.pos.x - radius;
+        const startY = this.pos.y - radius;
+        const cur = {x:startX, y:startY};
+        for (cur.y = startY; cur.y <= startY + radius * 2; cur.y++) {
+            for (cur.x = startX; cur.x <= startX + radius * 2; cur.x++) {
+                if (grid.isValid(cur)) {
+                    let diff = getDistance(cur, this.pos);
+                    if (diff <= radius) {
+                        const intensity = Math.max(0, radius + 0.1 - diff) * brightness;
+                        const curIntensity = grid.grid[cur.y][cur.x].getIntensity();
+                        grid.grid[cur.y][cur.x].setIntensity(Math.min(1, intensity + curIntensity));
+                    }
+                }
+            }
+        }
+    }
+
     reset() {
         return;
     }
 
-    update() {
+    update(deltaTime) {
         return;
     }
 

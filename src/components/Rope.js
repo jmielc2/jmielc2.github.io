@@ -30,9 +30,14 @@ export default class Rope extends Entity {
         super(Entity.Types.ROPE);
         this.setPos(pos);
         this.rings = new Array();
+        Rope.game = game;
         for (let i = 0; i < 5; i++) {
             this.rings.push(new Ring(this.pos));
         }
+    }
+
+    update(deltaTime) {
+        this.drawSpotlight(Rope.game.grid, 2, 0.2);
     }
 
     draw() {

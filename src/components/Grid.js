@@ -62,6 +62,10 @@ export default class Grid {
         });
     }
 
+    isValid(pos) {
+        return isValidPos(pos, this.grid);
+    }
+
     isAccessible(pos) {
         return (isValidPos(pos, this.grid) && this.getNodeType(pos) == Node.Types.PATH);
     }

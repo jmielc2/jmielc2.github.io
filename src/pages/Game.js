@@ -139,7 +139,12 @@ export default class Game {
     nextLevel() {
         this.level++;
         if (this.level == Game.Difficulty.length) {
-            Game.app.setPage(Game.app.Pages.MAIN_MENU);
+            if (this.player.hasThread) {
+                Game.app.Pages.END_PAGE.setSubText("...but can you do it without the thread?");
+            } else {
+                Game.app.Pages.END_PAGE.setSubText("And you did it without the thread!");
+            }
+            Game.app.setPage(Game.app.Pages.END_PAGE);
             return;
         } else {
             this.update = this.#beginLevel;

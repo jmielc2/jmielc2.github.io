@@ -1,7 +1,6 @@
-// import App from "../App.js"
 import Cell from "./Cell.js"
 
-const AMBIENT = 0.07;
+const AMBIENT = 0.1;
 
 export default class Node {
     static Types = {
@@ -20,12 +19,6 @@ export default class Node {
                 {r:255, g:235, b:180}, // Darkest
             ],
             id : 1
-        }, 
-        DEBUG : {
-            colors : [
-                {r:0, g:255, b:0}
-            ],
-            id : 2
         }
     };
     

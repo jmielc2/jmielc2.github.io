@@ -72,10 +72,6 @@ export default class Player extends Entity {
         }
         if (this.time >= (this.updateDelay * (1000 / App.FPS))) {
             if (this.dir) {
-                this.count++;
-                if (this.count > 10) {
-                    this.hasThread = true;
-                }
                 let thread = null;
                 if (this.hasThread) {
                     thread = new Thread(this.pos, this.dir);
@@ -120,7 +116,7 @@ export default class Player extends Entity {
             updateDelay : 6,
             inputDelay : 2,
             color : {r:100, g:100, b:200},
-            radius : 2,
+            radius : 3,
             brightness : 0.3,
         },
         W_ROPE : {
@@ -128,8 +124,8 @@ export default class Player extends Entity {
             updateDelay : 6,
             inputDelay : 2,
             color : {r:100, g:100, b:200},
-            radius : 3,
-            brightness : 0.4,
+            radius : 5,
+            brightness : 0.5,
         }
     }
 }

@@ -2,24 +2,12 @@ import { getDistance } from "./utils/GameUtils.js"
 
 export default class Entity {
     static Types = {
-        ENEMY : {
-            id : 0,
-        },
-        PLAYER : {
-            id : 1,
-        },
-        EXIT : {
-            id : 2,
-        },
-        THREAD  : {
-            id : 3,
-        },
-        ROPE : {
-            id : 4,
-        },
-        NONE : {
-            id : null,
-        }
+        ENEMY : 0,
+        PLAYER : 1,
+        EXIT : 2,
+        THREAD  : 3,
+        ROPE : 4,
+        NONE : null,
     }
 
     constructor(type) {

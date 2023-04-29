@@ -1,6 +1,7 @@
 import Cell from "./components/Cell.js"
 import MainMenu from "./pages/MainMenu.js"
 import Game from "./pages/Game.js"
+import EndPage from "./pages/EndPage.js"
 
 
 function getDimensions() {
@@ -25,7 +26,7 @@ export default class App {
 
     constructor(canvas) {
         App.canvas = canvas;
-        this.Pages = {MAIN_MENU : new MainMenu(this), GAME : new Game(this)};
+        this.Pages = {MAIN_MENU : new MainMenu(this), GAME : new Game(this), END_PAGE : new EndPage(this)};
         this.curPage = this.Pages.MAIN_MENU;
     }
 
@@ -37,6 +38,7 @@ export default class App {
     init() {
         this.Pages.MAIN_MENU.init();
         this.Pages.GAME.init();
+        this.Pages.END_PAGE.init();
     }
 }
 

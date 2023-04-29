@@ -28,7 +28,9 @@ function generateMaze_h(graph, difficulty) {
     let x, y;
     const explored = Array(graph.length).fill(null).map((x) => Array(graph[0].length).fill(false));
     let dir = Math.floor((Math.random() * 10)) % NUM_DIRS;
+    let choices = new Array();
     let furthest = new Entry(0, 0, dir, true);
+    choices.push(furthest);
     stack.push(furthest);
     while (stack.length) {
         let cur = stack.pop();

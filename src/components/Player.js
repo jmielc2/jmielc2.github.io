@@ -117,7 +117,7 @@ export default class Player extends Entity {
             inputDelay : 2,
             color : {r:100, g:100, b:200},
             radius : 3,
-            brightness : 0.3,
+            brightness : 0.25,
         },
         W_ROPE : {
             update : Player.#default,

@@ -42,11 +42,11 @@ export default class Game {
         this.entities.clear();
         this.grid.reset();
         let difficulty = Game.Difficulty[(this.level < Game.Difficulty.length)? this.level : Game.Difficulty.length - 1]
-        const mazeData = generateMaze(this.grid.grid, difficulty);
+        const mazeData = generateMaze(this.grid.grid, difficulty, (this.level <= 1)? 1 : 2);
         this.startExit(mazeData.end);
         this.startPlayer(mazeData.start);
-        this.startRope(mazeData.furthest);
-        this.startEnemy(mazeData.furthest);
+        this.startRope(mazeData.dead_ends[0]);
+        this.startEnemy(mazeData.dead_ends);
     }
 
     init() {
@@ -126,14 +126,13 @@ export default class Game {
     }
     
     startEnemy(pos) {
-        if (this.level == 1) {
-            this.enemy = new Enemy(this);
-            this.enemy.start(pos);
-            this.addEntity(this.enemy);
-        } else if (this.level > 1) {
-            this.enemy.start(pos);
-            this.addEntity(this.enemy);
-        }
+        pos.forEach((node) => {
+            if (this.level >= 1) {
+                let enemy = new Enemy(this);
+                enemy.start(node);
+                this.addEntity(enemy);
+            }
+        });
     }
 
     nextLevel() {
@@ -142,7 +141,7 @@ export default class Game {
             if (this.player.hasThread) {
                 Game.app.Pages.END_PAGE.setSubText("...but can you do it without the thread?");
             } else {
-                Game.app.Pages.END_PAGE.setSubText("And you did it without the thread!");
+                Game.app.Pages.END_PAGE.setSubText("And you did it without the thread! Very Nice!");
             }
             Game.app.setPage(Game.app.Pages.END_PAGE);
             return;

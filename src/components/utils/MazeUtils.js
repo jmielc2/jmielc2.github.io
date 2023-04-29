@@ -1,14 +1,14 @@
 import Node from "../Node.js"
 import { Directions, NUM_DIRS, BOUNDARY_POINTS } from "../../pages/Game.js"
-import { isValidPos } from "./GameUtils.js"
+import { isValidPos, getDistance } from "./GameUtils.js"
+import App from "../../App.js"
 
 class Entry {
-    constructor(x, y, dir, check, dist=0) {
+    constructor(x, y, dir, check) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.check = check;
-        this.dist = dist;
     }
 }
 
@@ -23,15 +23,17 @@ function canClearWall(cur, graph) {
     return (count < 3);
 }
 
-function generateMaze_h(graph, difficulty) {
+function generateMaze_h(graph, difficulty, startPos, endPos) {
     let stack = [];
     let x, y;
     const explored = Array(graph.length).fill(null).map((x) => Array(graph[0].length).fill(false));
     let dir = Math.floor((Math.random() * 10)) % NUM_DIRS;
     let choices = new Array();
-    let furthest = new Entry(0, 0, dir, true);
-    choices.push(furthest);
-    stack.push(furthest);
+
+    if (getDistance({x:1, y:1}, startPos) > App.DIM_X / 4 && getDistance({x:1, y:1}, endPos) > App.DIM_X / 4) {
+        choices.push({x:1, y:1});
+    }
+    stack.push(new Entry(0, 0, dir, true));
     while (stack.length) {
         let cur = stack.pop();
         if (explored[cur.y][cur.x] || canClearWall(cur, graph)) {
@@ -41,9 +43,6 @@ function generateMaze_h(graph, difficulty) {
         explored[cur.y][cur.x] = true;
 
         if (cur.check) {
-            if (cur.dist > furthest.dist) {
-                furthest = cur;
-            }
             if (Math.floor(Math.random() * 100) < difficulty) {
                 let temp;
                 do {
@@ -51,29 +50,34 @@ function generateMaze_h(graph, difficulty) {
                 } while (temp == cur.dir);
                 cur.dir = temp;
             }
+            let count = 0;
             for (let i = 0; i < NUM_DIRS; i++) {
                 if (i == cur.dir) {
                     continue;
                 }
                 x = cur.x + Directions[i].x,
                 y = cur.y + Directions[i].y
-                if (isValidPos({x:x, y:y}, graph)) {
-                    stack.push(new Entry(x, y, i, !cur.check, cur.dist + 1));
+                if (isValidPos({x:x, y:y}, graph) && !canClearWall({x:x, y:y}, graph)) {
+                    stack.push(new Entry(x, y, i, !cur.check));
+                    count++;
                 }
+            }
+            if (!count && getDistance(startPos, {x:cur.x + 1, y:cur.y + 1}) > App.DIM_X / 4 && getDistance({x:cur.x + 1, y:cur.y + 1}, endPos) > App.DIM_X / 4) {
+                choices.push({x:cur.x + 1, y:cur.y + 1});
             }
         }
         x = cur.x + Directions[cur.dir].x,
         y = cur.y + Directions[cur.dir].y
         if (isValidPos({x:x, y:y}, graph)) {
-            stack.push(new Entry(x, y, cur.dir, !cur.check, cur.dist + 1));
+            stack.push(new Entry(x, y, cur.dir, !cur.check));
         }
     }
-    furthest.x += 1;
-    furthest.y += 1;
-    return furthest;
+    graph[0][1].setType(Node.Types.PATH);
+    graph[1][0].setType(Node.Types.PATH);
+    return choices;
 }
 
-export function generateMaze(grid, difficulty) {
+export function generateMaze(grid, difficulty, numDeadEnds) {
     // Choose Start & End Points 
     let index = Math.floor(Math.random() * 10) % 4;
     const start = Object.assign({}, BOUNDARY_POINTS[index]);
@@ -86,9 +90,17 @@ export function generateMaze(grid, difficulty) {
     }, graph);
 
     // Generate Maze
+    const choices = generateMaze_h(graph, difficulty, start, end);
+    let ends = new Array();
+    for (let i = 0; i < numDeadEnds; i++) {
+        const index = Math.floor(Math.random() * choices.length);
+        ends.push(choices[index]);
+        choices.splice(index, 1);
+    }
+
     return {
         start : start,
         end : end,
-        furthest : generateMaze_h(graph, difficulty)
+        dead_ends : ends,
     };
 }

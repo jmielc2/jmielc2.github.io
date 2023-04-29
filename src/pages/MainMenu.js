@@ -74,6 +74,6 @@ export default class MainMenu {
     static app = null;
 
     playBtnCallback = (function() {
-        MainMenu.app.setPage(MainMenu.app.Pages.GAME);
+        MainMenu.app.setPage(MainMenu.app.Pages.INTRO_PAGE);
     }).bind(this);
 }

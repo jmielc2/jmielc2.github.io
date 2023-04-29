@@ -1,6 +1,6 @@
 import Cell from "./Cell.js"
 
-const AMBIENT = 0.1;
+const AMBIENT = 0.08;
 
 export default class Node {
     static Types = {

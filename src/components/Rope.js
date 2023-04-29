@@ -37,7 +37,7 @@ export default class Rope extends Entity {
     }
 
     update(deltaTime) {
-        this.drawSpotlight(Rope.game.grid, 2, 0.2);
+        this.drawSpotlight(Rope.game.grid, 3, 0.15);
     }
 
     draw() {

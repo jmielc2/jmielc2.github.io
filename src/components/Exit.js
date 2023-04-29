@@ -7,7 +7,7 @@ export default class Exit extends Entity {
     }
 
     update(deltaTime) {
-        this.drawSpotlight(Exit.game.grid, 2, 0.1);
+        this.drawSpotlight(Exit.game.grid, 3, 0.1);
     }
 
     static game;

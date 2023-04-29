@@ -102,7 +102,7 @@ export default class IntroPage {
                 x : null,
                 y : null,
                 size : 30,
-                text : "Theseus must escape the Labyrinth of King Minos alive!",
+                text : "Theseus must first escape the Labyrinth of King Minos alive!",
                 show : false
             },
             {

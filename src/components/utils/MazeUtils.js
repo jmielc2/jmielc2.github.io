@@ -25,15 +25,16 @@ function canClearWall(cur, graph) {
 
 function generateMaze_h(graph, difficulty, startPos, endPos) {
     let stack = [];
-    let x, y;
+    let x = Math.floor(Math.random() * ((graph[0].length - 1) / 2) + 1) * 2
+    let y = Math.floor(Math.random() * ((graph.length - 1) / 2) + 1) * 2;
     const explored = Array(graph.length).fill(null).map((x) => Array(graph[0].length).fill(false));
     let dir = Math.floor((Math.random() * 10)) % NUM_DIRS;
     let choices = new Array();
 
-    if (getDistance({x:1, y:1}, startPos) > App.DIM_X / 4 && getDistance({x:1, y:1}, endPos) > App.DIM_X / 4) {
+    if (getDistance({x:x + 1, y:y + 1}, startPos) > App.DIM_X / 4 && getDistance({x:x + 1, y:y + 1}, endPos) > App.DIM_X / 4) {
         choices.push({x:1, y:1});
     }
-    stack.push(new Entry(0, 0, dir, true));
+    stack.push(new Entry(x, y, dir, true));
     while (stack.length) {
         let cur = stack.pop();
         if (explored[cur.y][cur.x] || canClearWall(cur, graph)) {
@@ -72,8 +73,6 @@ function generateMaze_h(graph, difficulty, startPos, endPos) {
             stack.push(new Entry(x, y, cur.dir, !cur.check));
         }
     }
-    graph[0][1].setType(Node.Types.PATH);
-    graph[1][0].setType(Node.Types.PATH);
     return choices;
 }
 

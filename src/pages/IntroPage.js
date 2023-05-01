@@ -88,7 +88,7 @@ export default class IntroPage {
                 x : null,
                 y : null,
                 size : 25,
-                text : "After decades of human sacrifices, King Minos once again offers\nto release Theseus and his people from their brutal contract.",
+                text : "After decades of human sacrifices, King Minos once again offers\nto release Theseus and his people from their contract.",
                 show : false
             },
             {
